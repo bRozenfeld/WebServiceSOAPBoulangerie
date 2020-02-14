@@ -1,8 +1,12 @@
 package fr.ensibs.users;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * Class representing a user that can sign in
  */
+@XmlRootElement
 public class User {
     /**
      * unique identifier
@@ -19,6 +23,9 @@ public class User {
      */
     private boolean isAdmin;
 
+    public User() {
+
+    }
 
     public User(String username, String password, boolean isAdmin) {
         this.isAdmin = isAdmin;
@@ -26,6 +33,8 @@ public class User {
         this.password = password;
     }
 
+
+    @XmlElement
     public String getUsername() {
         return username;
     }
@@ -34,6 +43,7 @@ public class User {
         return password;
     }
 
+    @XmlElement
     public boolean isAdmin() {
         return isAdmin;
     }

@@ -3,10 +3,14 @@ package fr.ensibs.users;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
+import com.auth0.jwt.exceptions.JWTDecodeException;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
 import javax.jws.WebService;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @WebService(serviceName = "UserService", portName = "UserPort", endpointInterface = "fr.ensibs.users.UserService")
 public class UserServiceImpl implements UserService{
@@ -58,13 +62,19 @@ public class UserServiceImpl implements UserService{
 
             String hashPassword = rs.getString("password");
             int isAdmin = rs.getInt("isAdmin");
+            String typeUser;
+            if(isAdmin == 0) typeUser = "customer";
+            else typeUser = "admin";
 
             if(BCrypt.checkpw(password, hashPassword)) {
                 System.out.println(AUTHENTICATION_SUCCESSFULL);
                 try {
                     Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY);
-                    //String token = JWT.create()
-
+                    String token = JWT.create()
+                            .withClaim("username", username)
+                            .withClaim("isAdmin", typeUser)
+                            .sign(algorithm);
+                    return token;
                 } catch (JWTCreationException exception) {
                     exception.printStackTrace();
                 }
@@ -79,8 +89,69 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public void logOut() {
+    public User getUser(String token) {
+        return decodeToken(token);
+    }
 
+    @Override
+    public void deleteUser(String username, String token) {
+        User user = decodeToken(token);
+        if(!user.isAdmin()) {
+            System.out.println("Error, not allow to do this.");
+            return;
+        }
+
+        String sql = "DELETE FROM users WHERE username = ? ";
+        try (Connection conn = this.connect();
+            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, username);
+            pstmt.executeUpdate();
+        } catch(SQLException e) { e.printStackTrace(); }
+    }
+
+
+    @Override
+    public List<User> getUsers(String token) {
+
+        User user = decodeToken(token);
+        if(!user.isAdmin()) {
+            System.out.println("Error, not allow to do this.");
+            return null;
+        }
+
+        String sql = "SELECT username, isAdmin FROM users";
+        List<User> users = new ArrayList<User>();
+        try (Connection conn = this.connect();
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            ResultSet rs = pstmt.executeQuery()) {
+
+            while(rs.next()) {
+                String username = rs.getString("username");
+                int adminStatus = rs.getInt("isAdmin");
+                if(adminStatus==0) users.add(new User(username, "", false));
+                else users.add(new User(username, "", true));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return users;
+    }
+
+    private User decodeToken(String token) {
+        User user = null;
+        try {
+            DecodedJWT jwt = JWT.decode(token);
+            String status = jwt.getClaim("isAdmin").asString();
+            String username = jwt.getClaim("username").asString();
+            boolean isAdmin = false;
+            if(status.equals("admin")) isAdmin = true;
+
+            user = new User(username, "", isAdmin);
+
+        } catch(JWTDecodeException e) { e.printStackTrace(); }
+        return user;
     }
 
     /**

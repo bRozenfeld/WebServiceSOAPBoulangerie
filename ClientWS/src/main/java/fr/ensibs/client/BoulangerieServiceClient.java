@@ -1,10 +1,31 @@
 package fr.ensibs.client;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.exceptions.JWTDecodeException;
+import com.auth0.jwt.interfaces.DecodedJWT;
+
+import java.util.List;
 import java.util.Scanner;
+
 
 public class BoulangerieServiceClient {
 
-    private static boolean isAuth;
+    private static final String AUTHENTICATION_FAILED = "Authentication failed : Invalid credentials.";
+    private static final String AUTHENTICATION_SUCCESSFULL = "Authentication successful !";
+    private static final String COMMANDS_USER_LAMBDA = "Welcome to the app, \n"
+            + "LIST OF COMMANDS: \n"
+            + "\tSIGNUP <username> <password> <'customer'|'admin'> \n"
+            + "\tLOGIN <username> <password> \n"
+            + "\tQUIT";
+    private static final String COMMANDS_USER_ADMIN = "LIST OF COMMANDS: \n"
+            + "\tSHOW USERS\n"
+            + "\tDELETE <username>\n"
+            + "\tLOGOUT \n"
+            + "\tQUIT \n";
+    private static final String COMMANDS_USER_CUSTOMER = "LIST OF COMMANDS: \n"
+            + "\tLOGOUT\n"
+            + "\tQUIT\n";
+
     private static String token;
     private static UserService_Service userService;
     private static UserService userPort;
@@ -21,12 +42,16 @@ public class BoulangerieServiceClient {
     }
 
     public void run() {
-        System.out.println("Hello");
-        System.out.println("LIST OF COMMANDS: ");
-        System.out.println("\tSIGNUP <username> <password> <'customer'|'admin'>");
-        System.out.println("\tLOGIN <username> <password>");
-        System.out.println("\tLOGOUT");
-        System.out.println("\tQUIT");
+        if(token == null) {
+            System.out.println(COMMANDS_USER_LAMBDA);
+        } else {
+            User user = userPort.getUser(token);
+            if(user.isAdmin()) {
+                System.out.println(COMMANDS_USER_ADMIN);
+            } else {
+                System.out.println(COMMANDS_USER_CUSTOMER);
+            }
+        }
 
         Scanner scanner = new Scanner(System.in);
         String line = scanner.nextLine();
@@ -45,6 +70,22 @@ public class BoulangerieServiceClient {
                         logIn(command[1], command[2]);
                     } else { System.out.println("Unknown operation"); }
                     break;
+                case "logout":
+                case "LOGOUT":
+                    logOut();
+                    break;
+                case "SHOW":
+                    switch(command[1]) {
+                        case "USERS":
+                            showUsers(token);
+                            break;
+                    }
+                    break;
+                case "DELETE":
+                    if(command.length == 2) {
+                        deleteUser(command[1], token);
+                    }
+                    break;
                 default:
                     System.out.println("Unknown command: \"" + command[0] + "\"");
             }
@@ -55,6 +96,31 @@ public class BoulangerieServiceClient {
 
     public void quit() {
         System.exit(1);
+    }
+
+    public void logOut() {
+        this.token = null;
+        run();
+    }
+
+    public void deleteUser(String username, String token) {
+        userPort.deleteUser(username, token);
+        run();
+    }
+
+    /**
+     * Display the list of all the users
+     * @param token
+     */
+    public void showUsers(String token) {
+        List<User> users = userPort.getUsers(token);
+        for(User u : users) {
+            String s = "";
+            if(u.isAdmin()) s += "admin";
+            else s += "customer";
+            System.out.println(u.getUsername() + " : " + s);
+        }
+        run();
     }
 
     /**
@@ -78,9 +144,15 @@ public class BoulangerieServiceClient {
      * @param password
      */
     public void logIn(String username, String password) {
-        userPort.logIn(username, password);
-
+        token = userPort.logIn(username, password);
+        if(token == null) {
+            System.out.println(AUTHENTICATION_FAILED);
+        } else {
+            System.out.println(AUTHENTICATION_SUCCESSFULL);
+        }
+        run();
     }
+
 
     public boolean isAuth() {
         if(token == null) return false;

@@ -1,6 +1,7 @@
 package fr.ensibs.users;
 
 import javax.jws.*;
+import java.util.List;
 
 @WebService(name="UserService", targetNamespace = "http://userwebservice.ensibs.fr/")
 public interface UserService {
@@ -30,13 +31,28 @@ public interface UserService {
     String logIn(@WebParam(name="username") String username,
                  @WebParam(name="password") String password);
 
-    /**
-     * Log out a user from the app
-     * Delete the token given to him
-     */
-    @WebMethod(operationName = "logOut")
-    @WebResult(name = "logOutResult")
-    @Oneway
-    void logOut();
 
+    /**
+     * Retrieve the username and the type of user associate to this token
+     * @param token
+     * @return
+     */
+    @WebMethod(operationName = "getUser")
+    @WebResult(name = "getUserResult")
+    User getUser(@WebParam(name="token") String token);
+
+
+    @WebMethod(operationName = "deleteUser")
+    @WebResult(name = "deleteUserResult")
+    void deleteUser(@WebParam(name="username") String username, @WebParam(name="token") String token);
+
+    /**
+     * Retrieve the list of all users
+     * @param token
+     * @return
+     */
+
+    @WebMethod(operationName = "getUsers")
+    @WebResult(name = "getUsersResult")
+    List<User> getUsers(@WebParam(name="token") String token);
 }

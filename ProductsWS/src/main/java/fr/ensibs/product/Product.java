@@ -7,7 +7,7 @@ public class Product {
     /**
      * Id of the product
      */
-    private int id;
+    //private int id;
     /**
      *The name of the product
      */
@@ -22,8 +22,8 @@ public class Product {
      */
     public Product(){}
 
-    public Product(int id, String product_Name, Double price) {
-        this.id = id;
+    public Product(String product_Name, Double price) {
+        //this.id = id;
         this.product_Name = product_Name;
         this.price = price;
     }
@@ -32,13 +32,7 @@ public class Product {
      * Getters and setters
      */
 
-    public int getId() {
-        return id;
-    }
 
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getProduct_Name() {
         return product_Name;
@@ -58,6 +52,6 @@ public class Product {
 
     @Override
     public String toString(){
-        return "produit numero:"+this.id+", :[nom produit :"+this.product_Name+"prix du produit:"+this.price+"]";
+        return "produit  :[nom produit :"+this.product_Name+"prix du produit:"+this.price+"]";
     }
 }

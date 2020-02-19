@@ -9,7 +9,7 @@ public class Command {
     /**
      * Id of the command
      */
-    private int id;
+    //private int id;
     /**
      *The name of the product
      */
@@ -25,28 +25,22 @@ public class Command {
     /**
      * Indicate if a command is paid or not yet
      */
-    private Boolean isPurchased;
+    private Boolean isPaid;
 
     /**
      * Constructors
      */
     public Command(){}
 
-    public Command(int id, String product_Name, Double price, int quantity, Boolean isPurchased) {
-        this.id = id;
+    public Command( String product_Name, Double price, int quantity, Boolean isPaid) {
+        //this.id = id;
         this.product_Name = product_Name;
         this.price = price;
         this.quantity = quantity;
-        this.isPurchased = isPurchased;
+        this.isPaid = isPaid;
     }
 
-    public int getId() {
-        return id;
-    }
 
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getProduct_Name() {
         return product_Name;
@@ -72,18 +66,18 @@ public class Command {
         this.quantity = quantity;
     }
 
-    public Boolean getPurshased() {
-        return isPurchased;
+    public Boolean getPaid() {
+        return isPaid;
     }
 
-    public void setPurshased(Boolean purshased) {
-        isPurchased = purshased;
+    public void setPurshased(Boolean paid) {
+        isPaid = paid;
     }
 
     @Override
     public String toString(){
-        return "Commande numero "+this.id+" : [nom produit : "+this.product_Name+", quantité : "+this.quantity+
-                ", prix totale : "+this.price+"€, payé : "+this.isPurchased+"]";
+        return "Commande : [nom produit : "+this.product_Name+", quantité : "+this.quantity+
+                ", prix totale : "+this.price+"€, payé : "+this.isPaid+"]";
 
     }
 }

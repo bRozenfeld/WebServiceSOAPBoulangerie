@@ -1,27 +1,24 @@
 package fr.ensibs.product;
 
 import javax.jws.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @WebService(name="ProductService", targetNamespace = "http://productwebservice.ensibs.fr/")
 public interface ProductService {
     /**
-     * create a new product with the given parameters
-     * @param id
-     * @param product_name
+     * create a new Command with the given parameters
+     * @param productname
      * @param price
      * @param quantity
-     * @param isPurshased
+     * @param isPaid
      */
-    @WebMethod(operationName = "createProduct")
-    @WebResult(name="createProductResult")
+    @WebMethod(operationName = "createCommand")
+    @WebResult(name="createCommandResult")
     @Oneway
-    void createProductCard(@WebParam(name="id") int id ,
-                           @WebParam(name="product_name") String product_name,
-                           @WebParam(name="price") Double price,
-                           @WebParam(name="quantity") int quantity,
-                           @WebParam(name="status") boolean isPurshased);
+    void createCommand(@WebParam(name="product_name") String productname,
+                       @WebParam(name="price") Double price,
+                       @WebParam(name="quantity") int quantity,
+                       @WebParam(name="status") boolean isPaid);
 
 
     @WebMethod(operationName = "addCommand")
@@ -29,35 +26,46 @@ public interface ProductService {
     /**
      * Method to add a product to the command list
      */
-    void CommandProduct(@WebParam(name="product_id") int product_id,@WebParam(name="quantity") int quantity);
+    void CommandProduct(@WebParam(name="product_id") int productid,@WebParam(name="quantity") int quantity);
 
-    @WebMethod(operationName = "cancellCommand")
+    @WebMethod(operationName = "cancelCommand")
     @WebResult(name = "cancelCommandResult")
     /**
      * Method to cancel a command
      */
-    void cancelCommand(@WebParam(name="command_id") int command_id);
+    void cancelCommand(@WebParam(name="command_id") int commandid);
 
     @WebMethod(operationName = "getCommands")
     @WebResult(name = "getCommandsResult")
     /**
      * Method to display the lis of commands
      */
-    ArrayList<Command> getCommands();
+    List<Command> getCommands();
 
+    /**
+     * create a new product with the given parameters
+     * @param productname
+     * @param price
+     */
+    @WebMethod(operationName = "createProduct")
+    @WebResult(name="createProduct")
+    @Oneway
+    void createProduct(@WebParam(name="product_name") String productname,
+                       @WebParam(name="price") Double price);
+/**
     @WebMethod(operationName = "addProduct")
     @WebResult(name = "addProductResult")
     /**
      * Method to add a product to the products card
-     */
+     *
     void addProduct(@WebParam(name="product_name")String product_name,@WebParam(name="price")Double price);
-
+*/
     @WebMethod(operationName = "removeProduct")
     @WebResult(name = "removeProductResult")
     /**
      * Method to remove a product from the products card
      */
-    void removeProduct(@WebParam(name="product_name")String product_name);
+    void removeProduct(@WebParam(name="productname")String productname);
     @WebMethod(operationName = "getProductCard")
     @WebResult(name = "getProductCardResult")
     /**
@@ -71,5 +79,5 @@ public interface ProductService {
      * @param product_name
      * @return product from the products card
      */
-    Product getProduct(@WebParam(name="product_name") String product_name);
+    Product getProduct(@WebParam(name="productname") String productname);
 }

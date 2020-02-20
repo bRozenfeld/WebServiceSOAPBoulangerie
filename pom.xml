@@ -13,6 +13,7 @@
         <module>ProductsWS</module>
         <module>PaymentsWS</module>
         <module>BakeryDB</module>
+        <module>WarModule</module>
     </modules>
 
     <properties>

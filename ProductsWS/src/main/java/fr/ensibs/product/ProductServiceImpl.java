@@ -1,5 +1,7 @@
 package fr.ensibs.product;
 
+import fr.ensibs.bakerydb.BakeryDBConnect;
+
 import javax.jws.WebService;
 import java.sql.*;
 import java.util.ArrayList;
@@ -27,7 +29,7 @@ public class ProductServiceImpl implements ProductService {
             + ");";
 
     public ProductServiceImpl() {
-        this.initDB();
+        BakeryDBConnect.initDB();
     }
 
 
@@ -41,7 +43,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void createCommand(String productname, Double price, int quantity, boolean isPaid) {
         String sql = "INSERT INTO commands (productname, price, quantity, isPaid) VALUES (?,?,?,?)";
-        try (Connection conn = this.connect();
+        try (Connection conn = BakeryDBConnect.connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setString(1, productname);

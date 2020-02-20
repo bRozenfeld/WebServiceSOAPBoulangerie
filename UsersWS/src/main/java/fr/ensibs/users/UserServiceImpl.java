@@ -5,6 +5,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import fr.ensibs.bakerydb.BakeryDBConnect;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
 import javax.jws.WebService;
@@ -30,7 +31,7 @@ public class UserServiceImpl implements UserService{
             + ");";
 
     public UserServiceImpl() {
-        this.initDB();
+        BakeryDBConnect.initDB();
     }
 
     @Override

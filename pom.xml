@@ -12,6 +12,7 @@
         <module>UsersWS</module>
         <module>ProductsWS</module>
         <module>PaymentsWS</module>
+        <module>BakeryDB</module>
     </modules>
 
     <properties>

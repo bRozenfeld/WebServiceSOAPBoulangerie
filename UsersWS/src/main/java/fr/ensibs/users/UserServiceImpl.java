@@ -20,6 +20,8 @@ public class UserServiceImpl implements UserService{
     private static final String AUTHENTICATION_SUCCESSFULL = "Authentication successful !";
     private static final String DATABASE_URL = "jdbc:sqlite:boulangerie.db";
 
+    //private Connection connexion;
+
     private static final String CREATE_USER_TABLE = "CREATE TABLE IF NOT EXISTS users ( \n"
             + " id integer PRIMARY KEY, \n"
             + " username text UNIQUE, \n"
@@ -174,9 +176,11 @@ public class UserServiceImpl implements UserService{
     private Connection connect() {
         Connection conn = null;
         try {
+            Class.forName("org.sqlite.JDBC");
             conn = DriverManager.getConnection((DATABASE_URL));
+            //this.connexion = DriverManager.getConnection((DATABASE_URL));
             System.out.println("Connection to database has been established.");
-        } catch(SQLException e) { e.printStackTrace(); }
+        } catch(Exception e) { e.printStackTrace(); }
         return conn;
     }
 }

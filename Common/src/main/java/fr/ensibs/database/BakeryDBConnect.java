@@ -40,12 +40,14 @@ public final class BakeryDBConnect {
             + " isPaid integer NOT NULL, \n"
             + ");";
 
-    private BakeryDBConnect() { }
+    // static variable single_instance of type BakeryDBConnect
+    private static BakeryDBConnect database = null;
 
     /**
-     * Initialise the database
+     * private constructor restricted to this class itself
+     * initialise the database
      */
-    public static void initDB() {
+    private BakeryDBConnect() {
         try (Connection conn = connect();
              Statement stmt = conn.createStatement()) {
 
@@ -65,10 +67,19 @@ public final class BakeryDBConnect {
     }
 
     /**
+     * static method to create instance of this class
+     * @return
+     */
+    public static BakeryDBConnect getInstance() {
+        if(database == null) database = new BakeryDBConnect();
+        return database;
+    }
+
+    /**
      * Connect to the DATABASE_URL
      * @return {@Link Connection} object
      */
-    public static Connection connect() {
+    public Connection connect() {
         Connection conn = null;
         try {
             Class.forName("org.sqlite.JDBC");

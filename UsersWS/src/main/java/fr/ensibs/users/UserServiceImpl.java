@@ -26,9 +26,10 @@ public class UserServiceImpl implements UserService{
     private static final String AUTHENTICATION_FAILED = "Authentication failed : Invalid credentials.";
     private static final String AUTHENTICATION_SUCCESSFUL = "Authentication successful !";
 
+    private BakeryDBConnect database;
 
     public UserServiceImpl() {
-        BakeryDBConnect.initDB();
+        this.database = BakeryDBConnect.getInstance();
     }
 
     @Override
@@ -36,7 +37,7 @@ public class UserServiceImpl implements UserService{
         SOAPResponse response = null;
 
         String sql = "INSERT INTO users (username, password, isAdmin) VALUES (?,?,?)";
-        try (Connection conn = BakeryDBConnect.connect();
+        try (Connection conn = database.connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setString(1, username);
@@ -56,7 +57,7 @@ public class UserServiceImpl implements UserService{
         SOAPResponse response = null;
 
         String sql = "SELECT password, isAdmin FROM users WHERE username = ?";
-        try(Connection conn = BakeryDBConnect.connect();
+        try(Connection conn = database.connect();
             PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setString(1, username);
@@ -103,7 +104,7 @@ public class UserServiceImpl implements UserService{
         }
 
         String sql = "DELETE FROM users WHERE id = ? ";
-        try (Connection conn = BakeryDBConnect.connect();
+        try (Connection conn = database.connect();
             PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setInt(1, id);
@@ -128,7 +129,7 @@ public class UserServiceImpl implements UserService{
 
         String sql = "SELECT username, isAdmin FROM users";
         List<User> users = new ArrayList<User>();
-        try (Connection conn = BakeryDBConnect.connect();
+        try (Connection conn = database.connect();
             PreparedStatement pstmt = conn.prepareStatement(sql);
             ResultSet rs = pstmt.executeQuery()) {
 

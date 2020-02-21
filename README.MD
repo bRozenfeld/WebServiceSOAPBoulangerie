@@ -1,3 +1,4 @@
+# Boulangerie : Services de gestion d'une boulangerie réalisé par ROZENFELD Benjamin and SBAITY Haitam
 WebServiceSOAPBoulangerie
 
 ## Requirements
@@ -5,9 +6,18 @@ WebServiceSOAPBoulangerie
 * maven
 
 ## Project Architecture
-* Payments
-* Products
-* Users
+Dans cette application nous avons réalisé trois service pour la gestion d'une boulangerie:
+* Payments service
+* Products service
+* Users service
+
+## Description de lancement : 
+
+* Cloner le projet à partir de cette commande 
+
+```bash
+git clone https://github.com/bRozenfeld/WebServiceSOAPBoulangerie.git
+```
 
 ## La documentation
 Pour generer et voir la documentation, tapez la commande suivante 

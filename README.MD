@@ -16,5 +16,5 @@ Pour generer et voir la documentation, tapez la commande suivante
 mvn javadoc::aggregate
 ```
 
-V�rifiez Dans le dossier > target/ qu'un repertoir sous le nom de site est gener�
+Vérifiez Dans le dossier > target/ qu'un repertoir sous le nom de site est generé
 vous trouvez la documentation dans > target/site/apidocs

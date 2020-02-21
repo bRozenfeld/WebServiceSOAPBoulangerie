@@ -1,32 +1,19 @@
 package fr.ensibs.product;
 
 import javax.jws.*;
+import java.util.HashMap;
 import java.util.List;
 
 @WebService(name="ProductService", targetNamespace = "http://productwebservice.ensibs.fr/")
 public interface ProductService {
     /**
-     * create a new Command with the given parameters
-     * @param productname
-     * @param price
-     * @param quantity
-     * @param isPaid
+     * Add a new Command with the given parameters
+     * @param products Map of products with their quantity
      */
-    @WebMethod(operationName = "createCommand")
-    @WebResult(name="createCommandResult")
-    @Oneway
-    void createCommand(@WebParam(name="product_name") String productname,
-                       @WebParam(name="price") Double price,
-                       @WebParam(name="quantity") int quantity,
-                       @WebParam(name="status") boolean isPaid);
-
-
     @WebMethod(operationName = "addCommand")
-    @WebResult(name = "addCommandResult")
-    /**
-     * Method to add a product to the command list
-     */
-    void CommandProduct(@WebParam(name="product_id") int productid,@WebParam(name="quantity") int quantity);
+    @WebResult(name="addCommandResult")
+    @Oneway
+    void addCommand(@WebParam(name="products")HashMap<Product,Integer> products);
 
     @WebMethod(operationName = "cancelCommand")
     @WebResult(name = "cancelCommandResult")
@@ -40,26 +27,40 @@ public interface ProductService {
     /**
      * Method to display the lis of commands
      */
-    List<Command> getCommands();
+    List<Command> getListCommands();
+
+    @WebMethod(operationName = "addCommand")
+    @WebResult(name = "addCommandResult")
+    /**
+     * Method to add a product to the command
+     */
+    void commandProduct(@WebParam(name="command_id") int command_id,@WebParam(name="product_id") int productid,@WebParam(name="quantity") int quantity);
+
+    @WebMethod(operationName = "updatePrice")
+    @WebResult(name = "updatePriceResult")
+    /**
+     * Method to update the price total of the command when add a new product
+     */
+    void updatePrice(@WebParam(name="command_id")int command_id,@WebParam(name="price") double price);
 
     /**
-     * create a new product with the given parameters
+     * Method to get the products id with their quantity
+     * @param command_id the id of the command
+     * @return Map of products with their quantity
+     */
+    HashMap<Integer,Integer> getProductsOfCommand(@WebParam(name="command_id")int command_id);
+
+    /**
+     * Method to add a product to the products card
      * @param productname
      * @param price
      */
-    @WebMethod(operationName = "createProduct")
-    @WebResult(name="createProduct")
-    @Oneway
-    void createProduct(@WebParam(name="product_name") String productname,
-                       @WebParam(name="price") Double price);
-/**
     @WebMethod(operationName = "addProduct")
     @WebResult(name = "addProductResult")
-    /**
-     * Method to add a product to the products card
-     *
-    void addProduct(@WebParam(name="product_name")String product_name,@WebParam(name="price")Double price);
-*/
+    @Oneway
+    void addProduct(@WebParam(name="product_name") String productname,
+                       @WebParam(name="price") Double price);
+
     @WebMethod(operationName = "removeProduct")
     @WebResult(name = "removeProductResult")
     /**
@@ -80,4 +81,7 @@ public interface ProductService {
      * @return product from the products card
      */
     Product getProduct(@WebParam(name="productname") String productname);
+
+
+
 }

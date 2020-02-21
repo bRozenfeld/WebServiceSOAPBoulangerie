@@ -23,7 +23,6 @@ public class Product {
     public Product(){}
 
     public Product(String product_Name, Double price) {
-        //this.id = id;
         this.product_Name = product_Name;
         this.price = price;
     }

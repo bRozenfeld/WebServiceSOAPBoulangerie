@@ -1,6 +1,9 @@
 package fr.ensibs.product;
 
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * Class representing the order of a user
@@ -9,19 +12,15 @@ public class Command {
     /**
      * Id of the command
      */
-    //private int id;
+    private int command_id;
     /**
-     *The name of the product
+     * List of the products with their quantity
      */
-    private String product_Name;
+    private HashMap<Product,Integer> productsList;
     /**
      * The total price of the command
      */
     private Double price;
-    /**
-     * The quatity of commanded product
-     */
-    private int quantity;
     /**
      * Indicate if a command is paid or not yet
      */
@@ -32,22 +31,23 @@ public class Command {
      */
     public Command(){}
 
-    public Command( String product_Name, Double price, int quantity, Boolean isPaid) {
-        //this.id = id;
-        this.product_Name = product_Name;
+    public Command(int id,HashMap<Product,Integer> productsList,Double price, Boolean isPaid) {
+        this.productsList=productsList;
+        this.command_id = id;
         this.price = price;
-        this.quantity = quantity;
         this.isPaid = isPaid;
     }
 
-
-
-    public String getProduct_Name() {
-        return product_Name;
+    /**
+     * Getters and setters
+     *
+     */
+    public int getCommand_id() {
+        return command_id;
     }
 
-    public void setProduct_Name(String product_Name) {
-        this.product_Name = product_Name;
+    public void setCommand_id(int command_id) {
+        this.command_id = command_id;
     }
 
     public Double getPrice() {
@@ -58,25 +58,38 @@ public class Command {
         this.price = price;
     }
 
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
 
     public Boolean getPaid() {
         return isPaid;
     }
 
-    public void setPurshased(Boolean paid) {
+    public void setPaid(Boolean paid) {
         isPaid = paid;
+    }
+
+    public HashMap<Product, Integer> getProductsList() {
+        return productsList;
+    }
+
+    public void setProductsList(HashMap<Product, Integer> productsList) {
+        this.productsList = productsList;
+    }
+    public List<Product> getProducts(){
+         return (List<Product>) productsList.keySet();
+    }
+
+    public List<Integer> getQuantity(){
+        List<Integer> products_quantity=new ArrayList<>();
+        for(Product p:productsList.keySet()) {
+            products_quantity.add(productsList.get(p));
+        }
+        return products_quantity;
     }
 
     @Override
     public String toString(){
-        return "Commande : [nom produit : "+this.product_Name+", quantité : "+this.quantity+
+
+        return "Commande : [numero produit : "+this.command_id+"products name:"+ getProducts().toString()+ ",quantity:"+getQuantity().toString()+
                 ", prix totale : "+this.price+"€, payé : "+this.isPaid+"]";
 
     }

@@ -55,4 +55,9 @@ public interface UserService {
     @WebMethod(operationName = "getUsers")
     @WebResult(name = "getUsersResult")
     List<User> getUsers(@WebParam(name="token") String token);
+
+
+    @WebMethod(operationName = "test")
+    @WebResult(name = "testResult")
+    void test (@WebParam(name="users") List<User> users);
 }

@@ -1,6 +1,6 @@
 package fr.ensibs.product;
 
-import fr.ensibs.bakerydb.BakeryDBConnect;
+
 
 import javax.jws.WebService;
 import java.sql.*;

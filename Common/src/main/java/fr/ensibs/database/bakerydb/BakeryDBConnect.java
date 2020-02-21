@@ -1,4 +1,4 @@
-package fr.ensibs.bakerydb;
+package fr.ensibs.database.bakerydb;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -10,7 +10,7 @@ import java.sql.Statement;
  */
 public final class BakeryDBConnect {
 
-    private static final String DATABASE_URL = "jdbc:sqlite:boulangerie.db";
+    private static final String DATABASE_URL = "jdbc:sqlite:bakery.db";
     private static final String CREATE_USER_TABLE = "CREATE TABLE IF NOT EXISTS users ( \n"
             + " username text PRIMARY KEY, \n"
             + " password text, \n"

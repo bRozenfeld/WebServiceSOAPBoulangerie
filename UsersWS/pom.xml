@@ -27,13 +27,7 @@
         </dependency>
         <dependency>
             <groupId>org.example</groupId>
-            <artifactId>BakeryDB</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.example</groupId>
-            <artifactId>WebServiceSOAPBoulangerie</artifactId>
+            <artifactId>Common</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>

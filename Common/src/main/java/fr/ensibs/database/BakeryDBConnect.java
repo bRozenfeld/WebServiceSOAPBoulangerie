@@ -1,4 +1,4 @@
-package fr.ensibs.database.bakerydb;
+package fr.ensibs.database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -15,6 +15,11 @@ public final class BakeryDBConnect {
             + " username text PRIMARY KEY, \n"
             + " password text, \n"
             + " isAdmin integer NOT NULL \n"
+            + ");";
+
+    private static final String CREATE_BLACKLIST_TOKEN_TABLE = "CREATE TABLE IF NOT EXISTS blacklist_token (\n"
+            + " id integer PRIMARY KEY, \n"
+            + " token text NOT NULL \n"
             + ");";
 
     private static final String CREATE_PRODUCT_TABLE = "CREATE TABLE IF NOT EXISTS products ( \n"
@@ -52,6 +57,10 @@ public final class BakeryDBConnect {
             System.out.println("COMMAND TABLE created successfully.");
             stmt.execute(CREATE_COMMAND_PRODUCT_TABLE);
             System.out.println("COMMAND_PRODUCT TABLE created successfully.");
+            stmt.execute(CREATE_BLACKLIST_TOKEN_TABLE);
+
+
+            System.out.println("DATABASE initialised successfully.");
         } catch (SQLException e) { e.printStackTrace(); }
     }
 

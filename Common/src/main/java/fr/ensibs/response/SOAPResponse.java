@@ -5,6 +5,8 @@ public class SOAPResponse {
     private SOAPResponseStatus status;
     private Object requestObject;
 
+    public SOAPResponse() { }
+
     public SOAPResponse(String message, SOAPResponseStatus status, Object requestObject) {
         this.message = message;
         this.status = status;

@@ -1,5 +1,7 @@
 package fr.ensibs.users;
 
+import fr.ensibs.response.SOAPResponse;
+
 import javax.jws.*;
 import java.util.List;
 
@@ -14,10 +16,9 @@ public interface UserService {
      */
     @WebMethod(operationName = "createUser")
     @WebResult(name="createUserResult")
-    @Oneway
-    void createUser(@WebParam(name="username") String username,
-                    @WebParam(name="password") String password,
-                    @WebParam(name="isAdmin") boolean isAdmin);
+    SOAPResponse register(@WebParam(name="username") String username,
+                            @WebParam(name="password") String password,
+                            @WebParam(name="isAdmin") boolean isAdmin);
 
 
     /**
@@ -28,23 +29,14 @@ public interface UserService {
      */
     @WebMethod(operationName = "logIn")
     @WebResult(name = "logInResult")
-    String logIn(@WebParam(name="username") String username,
-                 @WebParam(name="password") String password);
+    SOAPResponse logIn(@WebParam(name="username") String username, @WebParam(name="password") String password);
 
 
-    /**
-     * Retrieve the username and the type of user associate to this token
-     * @param token
-     * @return
-     */
-    @WebMethod(operationName = "getUser")
-    @WebResult(name = "getUserResult")
-    User getUser(@WebParam(name="token") String token);
 
 
     @WebMethod(operationName = "deleteUser")
     @WebResult(name = "deleteUserResult")
-    void deleteUser(@WebParam(name="username") String username, @WebParam(name="token") String token);
+    SOAPResponse deleteUser(@WebParam(name="id") int id, @WebParam(name="token") String token);
 
     /**
      * Retrieve the list of all users
@@ -54,10 +46,7 @@ public interface UserService {
 
     @WebMethod(operationName = "getUsers")
     @WebResult(name = "getUsersResult")
-    List<User> getUsers(@WebParam(name="token") String token);
+    SOAPResponse getUsers(@WebParam(name="token") String token);
 
 
-    @WebMethod(operationName = "test")
-    @WebResult(name = "testResult")
-    void test (@WebParam(name="users") List<User> users);
 }

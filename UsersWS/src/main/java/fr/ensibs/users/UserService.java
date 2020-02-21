@@ -5,7 +5,7 @@ import fr.ensibs.response.SOAPResponse;
 import javax.jws.*;
 import java.util.List;
 
-@WebService(name="UserService", targetNamespace = "http://userwebservice.ensibs.fr/")
+@WebService(name="UserService")
 public interface UserService {
 
     /**

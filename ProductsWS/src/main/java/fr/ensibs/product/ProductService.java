@@ -4,7 +4,7 @@ import javax.jws.*;
 import java.util.HashMap;
 import java.util.List;
 
-@WebService(name="ProductService", targetNamespace = "http://productwebservice.ensibs.fr/")
+@WebService(name="ProductService")
 public interface ProductService {
     /**
      * Add a new Command with the given parameters
@@ -29,8 +29,8 @@ public interface ProductService {
      */
     List<Command> getListCommands();
 
-    @WebMethod(operationName = "addCommand")
-    @WebResult(name = "addCommandResult")
+    @WebMethod(operationName = "commandProduct")
+    @WebResult(name = "commandProduct")
     /**
      * Method to add a product to the command
      */

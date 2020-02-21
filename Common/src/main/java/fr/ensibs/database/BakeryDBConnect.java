@@ -11,9 +11,11 @@ import java.sql.Statement;
 public final class BakeryDBConnect {
 
     private static final String DATABASE_URL = "jdbc:sqlite:bakery.db";
+
     private static final String CREATE_USER_TABLE = "CREATE TABLE IF NOT EXISTS users ( \n"
-            + " username text PRIMARY KEY, \n"
-            + " password text, \n"
+            + " id integer PRIMARY KEY, \n"
+            + " username text UNIQUE NOT NULL, \n"
+            + " password text NOT NULL, \n"
             + " isAdmin integer NOT NULL \n"
             + ");";
 
@@ -25,19 +27,19 @@ public final class BakeryDBConnect {
     private static final String CREATE_PRODUCT_TABLE = "CREATE TABLE IF NOT EXISTS products ( \n"
             + " id integer PRIMARY KEY AUTOINCREMENT, \n"
             + " productname text UNIQUE, \n"
-            + " price double, \n"
+            + " price double \n"
             + ");";
 
     private static final String CREATE_COMMAND_PRODUCT_TABLE = "CREATE TABLE IF NOT EXISTS commandsProduct ( \n"
             + " product_id integer REFERENCES products (id), \n"
             + " command_id integer REFERENCES commands (command_id) , \n"
-            + " quantity integer, \n"
+            + " quantity integer \n"
             + ");";
 
     private static final String CREATE_COMMAND_TABLE = "CREATE TABLE IF NOT EXISTS commands ( \n"
             + " command_id integer PRIMARY KEY, \n"
             + " price double, \n"
-            + " isPaid integer NOT NULL, \n"
+            + " isPaid integer NOT NULL \n"
             + ");";
 
     // static variable single_instance of type BakeryDBConnect
@@ -84,7 +86,6 @@ public final class BakeryDBConnect {
         try {
             Class.forName("org.sqlite.JDBC");
             conn = DriverManager.getConnection((DATABASE_URL));
-            //this.connexion = DriverManager.getConnection((DATABASE_URL));
             System.out.println("Connection to database has been established.");
         } catch(Exception e) { e.printStackTrace(); }
         return conn;

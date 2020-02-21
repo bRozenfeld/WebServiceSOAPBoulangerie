@@ -11,8 +11,10 @@ import java.util.List;
 @WebService(serviceName = "ProductService", portName = "ProductPort", endpointInterface = "fr.ensibs.product.ProductService")
 public class ProductServiceImpl implements ProductService {
 
+    private BakeryDBConnect database;
+
     public ProductServiceImpl() {
-        BakeryDBConnect.initDB();
+        database = BakeryDBConnect.getInstance();
     }
 
 
@@ -25,7 +27,7 @@ public class ProductServiceImpl implements ProductService {
         String sql = "INSERT INTO commandsList (price, isPaid) VALUES (?,?)";
         List<Integer> products_id=new ArrayList<>();
         HashMap<Integer,Integer> product = new HashMap<>();
-        Connection conn = BakeryDBConnect.connect();
+        Connection conn = database.connect();
 
         try{
             PreparedStatement pstmt = conn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
@@ -82,7 +84,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void updatePrice(int command_id,double price){
         String sql = "UPDATE commands SET price =? WHERE id = ?";
-        try(Connection conn = BakeryDBConnect.connect();
+        try(Connection conn = database.connect();
             PreparedStatement stmt3 = conn.prepareStatement(sql);) {
             stmt3.setDouble(1, price);
             stmt3.setInt(2, command_id);
@@ -94,7 +96,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void commandProduct(int command_id,int product_id, int quantity) {
         String sql = "INSERT INTO commandsProduct (product_id, command_id, quantity) VALUES (?,?,?)";
-        try (Connection conn = BakeryDBConnect.connect();
+        try (Connection conn = database.connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setInt(1, product_id);
@@ -109,7 +111,7 @@ public class ProductServiceImpl implements ProductService {
     public void cancelCommand(int command_id) {
         String sql = "DELETE FROM commands WHERE id = ? ";
 
-        try (Connection conn = BakeryDBConnect.connect();
+        try (Connection conn = database.connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setInt(1, command_id);
@@ -121,7 +123,7 @@ public class ProductServiceImpl implements ProductService {
     public HashMap<Integer,Integer> getProductsOfCommand(int command_id){
         HashMap<Integer,Integer> productsOfCommand=new HashMap<>();
         String sql = "SELECT DISTINCT product_id, quantity FROM commandsProduct WHERE command_id = ?";
-        try (Connection conn = BakeryDBConnect.connect();
+        try (Connection conn = database.connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setInt(1, command_id);
@@ -139,7 +141,7 @@ public class ProductServiceImpl implements ProductService {
     public List<Command> getListCommands() {
         String sql = "SELECT id FROM commands";
         List<Command> commands = new ArrayList<>();
-        try (Connection conn = BakeryDBConnect.connect();
+        try (Connection conn = database.connect();
              PreparedStatement pstmt = conn.prepareStatement(sql);
              ResultSet rs = pstmt.executeQuery()) {
 
@@ -167,7 +169,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void addProduct(String productname, Double price) {
         String sql = "INSERT INTO products (productname, price) VALUES (?,?)";
-        try (Connection conn = BakeryDBConnect.connect();
+        try (Connection conn = database.connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setString(1, productname);
@@ -181,7 +183,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void removeProduct(String productname) {
         String sql = "DELETE FROM products WHERE productname = ? ";
-        try (Connection conn = BakeryDBConnect.connect();
+        try (Connection conn = database.connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setString(1, productname);
@@ -193,7 +195,7 @@ public class ProductServiceImpl implements ProductService {
     public List<Product> getProductsCard() {
         String sql = "SELECT id,productname FROM Products";
         List<Product> products = new ArrayList<Product>();
-        try (Connection conn = BakeryDBConnect.connect();
+        try (Connection conn = database.connect();
              PreparedStatement pstmt = conn.prepareStatement(sql);
              ResultSet rs = pstmt.executeQuery()) {
 
@@ -213,7 +215,7 @@ public class ProductServiceImpl implements ProductService {
     public Product getProduct(String product_name) {
         String sql = "SELECT id,productname FROM products WHERE productname = ? ";
         Product product = new Product();
-        try (Connection conn =BakeryDBConnect.connect();
+        try (Connection conn =database.connect();
              PreparedStatement pstmt = conn.prepareStatement(sql);
             ) {
             pstmt.setString(1,product_name);

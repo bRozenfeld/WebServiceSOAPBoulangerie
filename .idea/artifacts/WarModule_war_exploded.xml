@@ -14,13 +14,10 @@
           <element id="module-output" name="WarModule" />
         </element>
         <element id="directory" name="lib">
-          <element id="library" level="project" name="Maven: org.example:BakeryDB:1.0-SNAPSHOT" />
           <element id="archive" name="ProductsWS-1.0-SNAPSHOT.jar">
             <element id="module-output" name="ProductsWS" />
           </element>
-          <element id="archive" name="Common-1.0-SNAPSHOT.jar">
-            <element id="module-output" name="Common" />
-          </element>
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/example/Common/1.0-SNAPSHOT/Common-1.0-SNAPSHOT.jar" output-file-name="org.example-Common-1.0-SNAPSHOT.jar" />
           <element id="archive" name="UsersWS-1.0-SNAPSHOT.jar">
             <element id="module-output" name="UsersWS" />
           </element>
@@ -30,6 +27,9 @@
           <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.10.0.pr3" />
           <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-core:2.10.0.pr3" />
           <element id="library" level="project" name="Maven: commons-codec:commons-codec:1.12" />
+          <element id="archive" name="fr.ensibs-Common-1.0-SNAPSHOT.jar">
+            <element id="module-output" name="Common" />
+          </element>
           <element id="library" level="project" name="Maven: com.sun.xml.ws:jaxws-rt:2.3.2" />
           <element id="library" level="project" name="Maven: jakarta.xml.bind:jakarta.xml.bind-api:2.3.2" />
           <element id="library" level="project" name="Maven: jakarta.xml.ws:jakarta.xml.ws-api:2.3.2" />

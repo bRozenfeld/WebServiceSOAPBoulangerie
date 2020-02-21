@@ -6,6 +6,12 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import fr.ensibs.database.BakeryDBConnect;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public final class Authentication {
 
@@ -30,6 +36,20 @@ public final class Authentication {
             e.printStackTrace();
         }
 
+        if(res) {
+            String sql = "SELECT * FROM blacklist_token WHERE token = ? ";
+            try (Connection conn = BakeryDBConnect.getInstance().connect();
+                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+                pstmt.setString(1, token);
+                ResultSet rs = pstmt.executeQuery();
+
+                if (rs.next()) res = false;
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
         return res;
     }
 

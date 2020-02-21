@@ -14,8 +14,8 @@ public interface UserService {
      * @param password {@link String} used to auth this user
      * @param isAdmin {@link Boolean} used to define the role of this user
      */
-    @WebMethod(operationName = "createUser")
-    @WebResult(name="createUserResult")
+    @WebMethod(operationName = "register")
+    @WebResult(name="registerResult")
     SOAPResponse register(@WebParam(name="username") String username,
                             @WebParam(name="password") String password,
                             @WebParam(name="isAdmin") boolean isAdmin);
@@ -43,10 +43,15 @@ public interface UserService {
      * @param token
      * @return
      */
-
     @WebMethod(operationName = "getUsers")
     @WebResult(name = "getUsersResult")
     SOAPResponse getUsers(@WebParam(name="token") String token);
 
+    /**
+     * Log out the user by invalidating his token
+     * @param token
+     * @return
+     */
+    SOAPResponse logout(@WebParam(name="token") String token);
 
 }

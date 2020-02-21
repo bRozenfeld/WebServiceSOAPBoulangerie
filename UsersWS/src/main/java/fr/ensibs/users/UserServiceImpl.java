@@ -3,8 +3,6 @@ package fr.ensibs.users;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
-import com.auth0.jwt.exceptions.JWTDecodeException;
-import com.auth0.jwt.interfaces.DecodedJWT;
 import fr.ensibs.auth.Authentication;
 import fr.ensibs.database.BakeryDBConnect;
 import fr.ensibs.response.SOAPResponse;
@@ -36,14 +34,19 @@ public class UserServiceImpl implements UserService{
     public SOAPResponse register(String username, String password, boolean isAdmin) {
         SOAPResponse response = null;
 
+        if(username.isEmpty() || password.isEmpty()) {
+            response = new SOAPResponse("Empty parameters.", SOAPResponseStatus.FAILED, null);
+            return response;
+        }
+
         String sql = "INSERT INTO users (username, password, isAdmin) VALUES (?,?,?)";
         try (Connection conn = database.connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setString(1, username);
             pstmt.setString(2, BCrypt.hashpw(password, BCrypt.gensalt()));
-            if(isAdmin) pstmt.setInt(3, 1);
-            else pstmt.setInt(3, 0);
+            if(isAdmin) pstmt.setBoolean(3, true);
+            else pstmt.setBoolean(3, false);
             pstmt.executeUpdate();
             response = new SOAPResponse("User " + username + " added successfully.", SOAPResponseStatus.SUCCESS, null);
         } catch (SQLException e) { e.printStackTrace(); }
@@ -128,6 +131,7 @@ public class UserServiceImpl implements UserService{
         }
 
         String sql = "SELECT username, isAdmin FROM users";
+        User[] arrayUsers;
         List<User> users = new ArrayList<User>();
         try (Connection conn = database.connect();
             PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -135,8 +139,8 @@ public class UserServiceImpl implements UserService{
 
             while(rs.next()) {
                 String username = rs.getString("username");
-                int adminStatus = rs.getInt("isAdmin");
-                if(adminStatus==0) users.add(new User(username, "", false));
+                boolean isAdmin = rs.getBoolean("isAdmin");
+                if(isAdmin) users.add(new User(username, "", false));
                 else users.add(new User(username, "", true));
             }
 
@@ -145,6 +149,26 @@ public class UserServiceImpl implements UserService{
             e.printStackTrace();
         }
         if(response == null) response = new SOAPResponse("Error while getting list of users.", SOAPResponseStatus.FAILED, null);
+        return response;
+    }
+
+    @Override
+    public SOAPResponse logout(String token) {
+        SOAPResponse response = null;
+
+        String sql = "INSERT INTO blacklist_token(token) VALUES (?) ";
+        try(Connection conn = database.connect();
+            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, token);
+            pstmt.executeUpdate();
+
+            response = new SOAPResponse("Log out successfully", SOAPResponseStatus.SUCCESS, null);
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+
+        if(response == null) new SOAPResponse("Log out impossible.", SOAPResponseStatus.FAILED, null);
         return response;
     }
 

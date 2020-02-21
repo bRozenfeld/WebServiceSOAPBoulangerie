@@ -1,5 +1,11 @@
 package fr.ensibs.response;
 
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSeeAlso;
+import java.util.ArrayList;
+
+@XmlRootElement
+@XmlSeeAlso(ArrayList.class)
 public class SOAPResponse {
     private String message;
     private SOAPResponseStatus status;

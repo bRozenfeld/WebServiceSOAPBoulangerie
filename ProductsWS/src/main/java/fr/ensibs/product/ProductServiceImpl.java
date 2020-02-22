@@ -54,7 +54,7 @@ public class ProductServiceImpl implements ProductService {
                 command_id = rs.getInt("command_id");
             }*/
             String sql2="select MAX(command_id)  from commands";
-            PreparedStatement pstmt2 = conn.prepareStatement(sql);
+            PreparedStatement pstmt2 = conn.prepareStatement(sql2);
 
             ResultSet rs = pstmt2.executeQuery();
             int command_id = rs.getInt(1);

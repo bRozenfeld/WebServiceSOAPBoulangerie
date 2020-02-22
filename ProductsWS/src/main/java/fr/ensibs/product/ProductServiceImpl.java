@@ -53,18 +53,18 @@ public class ProductServiceImpl implements ProductService {
             if (rs.next()){
                 command_id = rs.getInt("command_id");
             }*/
-            /**String sql2="select MAX(command_id)  from commands";
+            String sql2="select MAX(command_id)  from commands";
             PreparedStatement pstmt2 = conn.prepareStatement(sql);
 
             ResultSet rs = pstmt2.executeQuery();
-            int command_id = rs.getInt(1);*/
-            String sql2="select command_id  from commands";
+            int command_id = rs.getInt(1);
+            /**String sql2="select command_id  from commands";
             PreparedStatement pstmt2 = conn.prepareStatement(sql2);
             ResultSet rs = pstmt2.executeQuery();
             while(rs.next()){
                 commandid.add(rs.getInt(1));
             }
-            int command_id = commandid.get(commandid.size()-1);
+            int command_id = commandid.get(commandid.size()-1);*/
             //Get product id and quantity
             for(Product p:products.keySet()) {
                 String sql1 = "SELECT id FROM products WHERE productname = ?";
@@ -113,17 +113,17 @@ public class ProductServiceImpl implements ProductService {
         }
 
         Connection conn = database.connect();
-        ArrayList<Integer> commandid = new ArrayList<>();
+       // ArrayList<Integer> commandid = new ArrayList<>();
 
         try {
 
-            String sql2="select command_id  from commands";
+            String sql2="select MAX(command_id)  from commands";
             PreparedStatement pstmt2 = conn.prepareStatement(sql2);
             ResultSet rs = pstmt2.executeQuery();
-            while(rs.next()){
-                commandid.add(rs.getInt(1));
-            }
-            int command_id = commandid.get(commandid.size()-1);
+            //while(rs.next()){
+                int command_id=rs.getInt(1);
+            //}
+            //int command_id = commandid.get(commandid.size()-1);
             response=new SOAPResponse("Command id number "+command_id+" retrieved successfuly.", SOAPResponseStatus.SUCCESS, command_id);
         }catch(SQLException e){e.printStackTrace();}
 

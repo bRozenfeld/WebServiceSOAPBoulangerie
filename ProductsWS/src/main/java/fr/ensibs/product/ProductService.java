@@ -26,7 +26,7 @@ public interface ProductService {
     @WebMethod(operationName = "getCommands")
     @WebResult(name = "getCommandsResult")
     /**
-     * Method to display the lis of commands
+     * Method to display the list of commands
      */
     SOAPResponse getListCommands(@WebParam(name="user_token") String token);
 
@@ -84,6 +84,11 @@ public interface ProductService {
      */
     SOAPResponse getProduct(@WebParam(name="productname") String productname,@WebParam(name="user_token") String token);
 
-
+    /**
+     * Method to get the id of the las inserted value
+     */
+    @WebMethod(operationName = "getId")
+    @WebResult(name = "getIdResult")
+    SOAPResponse getLastCommandId(@WebParam(name="token") String token);
 
 }

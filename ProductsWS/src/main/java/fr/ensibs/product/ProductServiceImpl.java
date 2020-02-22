@@ -11,6 +11,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+
+/**
+ * Class to define the product service
+ * @author SBAITY Haitam-ROZENFELD Benjamin
+ *
+ */
 @WebService(serviceName = "ProductService", portName = "ProductPort", endpointInterface = "fr.ensibs.product.ProductService")
 public class ProductServiceImpl implements ProductService {
 

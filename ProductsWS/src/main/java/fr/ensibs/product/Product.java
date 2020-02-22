@@ -2,6 +2,7 @@ package fr.ensibs.product;
 
 /**
  * Class representing the product that a user can purshase
+ * @author  SBAITY Haitam-ROZENFELD Benjamin
  */
 public class Product {
     /**

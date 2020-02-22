@@ -7,6 +7,7 @@ import java.util.List;
 
 /**
  * Class representing the order of a user
+ * @author SBAITY Haitam-ROZENFELD Benjamin
  */
 public class Command {
     /**

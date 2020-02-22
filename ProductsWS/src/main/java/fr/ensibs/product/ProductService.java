@@ -4,8 +4,12 @@ import fr.ensibs.response.SOAPResponse;
 
 import javax.jws.*;
 import java.util.HashMap;
-import java.util.List;
 
+/**
+ * Interface to define the product service
+ * @author SBAITY Haitam-ROZENFELD Benjamin
+ *
+ */
 @WebService(name="ProductService", targetNamespace = "http://productwebservice.ensibs.fr/")
 public interface ProductService {
     /**

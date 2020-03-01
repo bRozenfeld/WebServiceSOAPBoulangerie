@@ -87,11 +87,19 @@ public class Command {
         return products_quantity;
     }
 
+   public String getBill(){
+        String bill="";
+        for(Product p:productsList.keySet()){
+            bill+="product name : "+p.getProduct_Name()+"     price:"+p.getPrice()+"€      quantity"+productsList.get(p)+"\n";
+
+        }
+        return bill;
+   }
+
     @Override
     public String toString(){
 
-        return "Commande : [numero produit : "+this.command_id+"products name:"+ getProducts().toString()+ ",quantity:"+getQuantity().toString()+
-                ", prix totale : "+this.price+"€, payé : "+this.isPaid+"]";
+        return "Commande numero  : "+this.command_id+"\n"+getBill()+"\n prix totale : "+this.price+"€, \n payé : "+this.isPaid+"\n";
 
     }
 }

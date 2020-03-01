@@ -42,13 +42,22 @@ public class PaymentServiceImpl implements PaymentService  {
             response = new SOAPResponse("Not allow", SOAPResponseStatus.UNAUTHORIZED, null);
             return response;
         }
-        String sql = "UPDATE commands SET isPaid =? WHERE command_id = ?";
+        String sql1 = "UPDATE commands SET isPaid =? WHERE command_id = ?";
+        String sql ="SELECT isPaid FROM commands WHERE command_id = ?";
         try(Connection conn = database.connect();
-            PreparedStatement stmt3 = conn.prepareStatement(sql);) {
-            stmt3.setInt(1, 1);
-            stmt3.setInt(2, command_id);
-            stmt3.executeUpdate();
-            response=getBill(command_id,token);
+            PreparedStatement stmt = conn.prepareStatement(sql);) {
+            stmt.setInt(1,command_id);
+            ResultSet rs = stmt.executeQuery();
+            int paid = rs.getInt("isPaid");
+            if(paid == 0){
+                PreparedStatement stmt1 = conn.prepareStatement(sql1);
+                stmt1.setInt(1, 1);
+                stmt1.setInt(2, command_id);
+                stmt1.executeUpdate();
+                response=getBill(command_id,token);
+            }else{
+                response = new SOAPResponse("Command number: "+command_id+" is already paid.", SOAPResponseStatus.FAILED, null);
+            }
         }catch(SQLException e){e.printStackTrace();}
 
         if(response == null) response = new SOAPResponse("Error while paying command.", SOAPResponseStatus.FAILED, null);
@@ -92,8 +101,8 @@ public class PaymentServiceImpl implements PaymentService  {
             PreparedStatement pstmt1 = conn.prepareStatement(sql1);
             pstmt1.setInt(1, command_id);
             ResultSet rs1 = pstmt1.executeQuery();
-            double pricetot = rs.getDouble("price");
-            int isPaid = rs.getInt("isPaid");
+            double pricetot = rs1.getDouble("price");
+            int isPaid = rs1.getInt("isPaid");
             boolean paid;
             if(isPaid==1) paid=true;
             else paid=false;
@@ -101,7 +110,7 @@ public class PaymentServiceImpl implements PaymentService  {
 
 
             Command command=new Command(command_id,products,pricetot,paid);
-            response = new SOAPResponse("Bill generated "+command.toString()+ "successfully.", SOAPResponseStatus.SUCCESS, command);
+            response = new SOAPResponse("Bill generated "+command+ "successfully.", SOAPResponseStatus.SUCCESS, command);
 
 
         }catch(SQLException e) { e.printStackTrace(); }

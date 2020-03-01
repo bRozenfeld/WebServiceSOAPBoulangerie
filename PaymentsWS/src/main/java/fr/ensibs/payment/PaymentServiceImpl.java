@@ -4,10 +4,10 @@ import fr.ensibs.auth.Authentication;
 import fr.ensibs.database.BakeryDBConnect;
 import fr.ensibs.product.Command;
 import fr.ensibs.product.Product;
-import fr.ensibs.product.ProductService;
 import fr.ensibs.response.SOAPResponse;
 import fr.ensibs.response.SOAPResponseStatus;
 
+import javax.jws.WebService;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,6 +19,7 @@ import java.util.HashMap;
  * @author SBAITY Haitam-ROZENFELD Benjamin
  *
  */
+@WebService(serviceName = "PaymentService", portName = "PaymentPort", endpointInterface = "fr.ensibs.payment.PaymentService")
 public class PaymentServiceImpl implements PaymentService  {
 
     private BakeryDBConnect database;

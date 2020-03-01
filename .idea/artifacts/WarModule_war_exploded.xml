@@ -26,6 +26,9 @@
           <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.10.0.pr3" />
           <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-core:2.10.0.pr3" />
           <element id="library" level="project" name="Maven: commons-codec:commons-codec:1.12" />
+          <element id="archive" name="PaymentsWS-1.0-SNAPSHOT.jar">
+            <element id="module-output" name="PaymentsWS" />
+          </element>
           <element id="archive" name="Common-1.0-SNAPSHOT.jar">
             <element id="module-output" name="Common" />
           </element>

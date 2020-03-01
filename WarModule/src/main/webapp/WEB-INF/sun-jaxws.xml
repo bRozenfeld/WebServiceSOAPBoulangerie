@@ -2,4 +2,5 @@
 <endpoints xmlns="http://java.sun.com/xml/ns/jax-ws/ri/runtime" version="2.0">
     <endpoint name="UserWS" implementation="fr.ensibs.users.UserServiceImpl" url-pattern="/users" />
     <endpoint name="ProductsWS" implementation="fr.ensibs.product.ProductServiceImpl" url-pattern="/product" />
+    <endpoint name="PaymentsWS" implementation="fr.ensibs.payment.PaymentServiceImpl" url-pattern="/payment" />
 </endpoints>

@@ -66,4 +66,20 @@ public final class Authentication {
         } catch(JWTDecodeException e) { e.printStackTrace(); }
         return res;
     }
+
+    /**
+     *
+     * @param token
+     * @return
+     */
+    public static int getUserId(String token) {
+       int res = -1;
+       try {
+           DecodedJWT jwt = JWT.decode(token);
+           res = jwt.getClaim("id").asInt();
+       } catch(JWTDecodeException e) {
+           e.printStackTrace();
+       }
+       return res;
+    }
 }

@@ -28,15 +28,21 @@ public class Command {
     private Boolean isPaid;
 
     /**
+     * id of the user owning this command
+     */
+    private int user_id;
+
+    /**
      * Constructors
      */
     public Command(){}
 
-    public Command(int id,HashMap<Product,Integer> productsList,Double price, Boolean isPaid) {
+    public Command(int id,HashMap<Product,Integer> productsList,Double price, Boolean isPaid, int user_id) {
         this.productsList=productsList;
         this.command_id = id;
         this.price = price;
         this.isPaid = isPaid;
+        this.user_id = user_id;
     }
 
     /**
@@ -87,7 +93,15 @@ public class Command {
         return products_quantity;
     }
 
-   public String getBill(){
+    public int getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(int user_id) {
+        this.user_id = user_id;
+    }
+
+    public String getBill(){
         String bill="";
         for(Product p:productsList.keySet()){
             bill+="product name : "+p.getProduct_Name()+"     price:"+p.getPrice()+"€      quantity"+productsList.get(p)+"\n";

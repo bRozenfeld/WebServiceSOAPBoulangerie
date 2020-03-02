@@ -25,7 +25,7 @@ public final class BakeryDBConnect {
             + ");";
 
     private static final String CREATE_PRODUCT_TABLE = "CREATE TABLE IF NOT EXISTS products ( \n"
-            + " id integer PRIMARY KEY AUTOINCREMENT, \n"
+            + " id integer PRIMARY KEY, \n"
             + " productname text UNIQUE, \n"
             + " price double \n"
             + ");";
@@ -39,7 +39,8 @@ public final class BakeryDBConnect {
     private static final String CREATE_COMMAND_TABLE = "CREATE TABLE IF NOT EXISTS commands ( \n"
             + " command_id integer PRIMARY KEY, \n"
             + " price double, \n"
-            + " isPaid integer NOT NULL \n"
+            + " isPaid integer NOT NULL, \n"
+            + " user_id integer REFERENCES users (id) \n"
             + ");";
 
     // static variable single_instance of type BakeryDBConnect

@@ -59,7 +59,7 @@ public class UserServiceImpl implements UserService{
     public SOAPResponse logIn(String username, String password) {
         SOAPResponse response = null;
 
-        String sql = "SELECT password, isAdmin FROM users WHERE username = ?";
+        String sql = "SELECT id, password, isAdmin FROM users WHERE username = ?";
         try(Connection conn = database.connect();
             PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
@@ -72,6 +72,7 @@ public class UserServiceImpl implements UserService{
 
             String hashPassword = rs.getString("password");
             boolean isAdmin = rs.getBoolean("isAdmin");
+            int id = rs.getInt("id");
 
             if(BCrypt.checkpw(password, hashPassword)) {
                 System.out.println(AUTHENTICATION_SUCCESSFUL);
@@ -83,6 +84,7 @@ public class UserServiceImpl implements UserService{
                             .withExpiresAt(new Date(now.getTime() + 1000*60*60))
                             .withClaim("username", username)
                             .withClaim("isAdmin", isAdmin)
+                            .withClaim("id", id)
                             .sign(algorithm);
 
                     response = new SOAPResponse(AUTHENTICATION_SUCCESSFUL, SOAPResponseStatus.SUCCESS, token);

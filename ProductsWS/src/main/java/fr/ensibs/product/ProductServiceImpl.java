@@ -38,7 +38,10 @@ public class ProductServiceImpl implements ProductService {
             response = new SOAPResponse("Not allow", SOAPResponseStatus.UNAUTHORIZED, null);
             return response;
         }
-        String sql = "INSERT INTO commands (price, isPaid) VALUES (?,?)";
+
+        int userId = Authentication.getUserId(token);
+
+        String sql = "INSERT INTO commands (price, isPaid, user_id) VALUES (?,?,?)";
         List<Integer> products_id=new ArrayList<>();
         HashMap<Integer,Integer> product = new HashMap<>();
         Connection conn = database.connect();
@@ -51,6 +54,7 @@ public class ProductServiceImpl implements ProductService {
             //Insert Command table
             pstmt.setDouble(1,0.0);
             pstmt.setInt(2, 0);
+            pstmt.setInt(3, userId);
             pstmt.executeUpdate();
             System.out.println("Command added successfully");
             //Get command id
@@ -110,32 +114,6 @@ public class ProductServiceImpl implements ProductService {
         return response;
     }
 
-    @Override
-    public SOAPResponse getLastCommandId(String token){
-        SOAPResponse response=null;
-        if(!Authentication.isAuthenticated(token) || !Authentication.isAdmin(token)) {
-            response = new SOAPResponse("Not allow", SOAPResponseStatus.UNAUTHORIZED, null);
-            return response;
-        }
-
-        Connection conn = database.connect();
-       // ArrayList<Integer> commandid = new ArrayList<>();
-
-        try {
-
-            String sql2="select MAX(command_id)  from commands";
-            PreparedStatement pstmt2 = conn.prepareStatement(sql2);
-            ResultSet rs = pstmt2.executeQuery();
-            //while(rs.next()){
-                int command_id=rs.getInt(1);
-            //}
-            //int command_id = commandid.get(commandid.size()-1);
-            response=new SOAPResponse("Command id number "+command_id+" retrieved successfuly.", SOAPResponseStatus.SUCCESS, command_id);
-        }catch(SQLException e){e.printStackTrace();}
-
-        if(response == null) response = new SOAPResponse("Error while searching command id.", SOAPResponseStatus.FAILED, null);
-        return response;
-    }
 
     @Override
     public SOAPResponse updatePrice(int command_id,double price,String token){
@@ -163,6 +141,7 @@ public class ProductServiceImpl implements ProductService {
             response = new SOAPResponse("Not allow", SOAPResponseStatus.UNAUTHORIZED, null);
             return response;
         }
+
         String sql = "INSERT INTO commandsProduct (product_id, command_id, quantity) VALUES (?,?,?)";
         try (Connection conn = database.connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -229,6 +208,9 @@ public class ProductServiceImpl implements ProductService {
             response = new SOAPResponse("Not allow", SOAPResponseStatus.UNAUTHORIZED, null);
             return response;
         }
+
+        int userId = Authentication.getUserId(token);
+
         String sql = "SELECT * FROM commands";
         List<Command> commands = new ArrayList<Command>();
         try (Connection conn = database.connect();
@@ -239,8 +221,8 @@ public class ProductServiceImpl implements ProductService {
                 int id = rs.getInt("command_id");
                 double productprice = rs.getDouble("price");
                 int isPaid = rs.getInt("isPaid");
-                if(isPaid==1)commands.add(new Command(id,null,productprice,true));
-                else commands.add(new Command(id,null,productprice,false));
+                if(isPaid==1)commands.add(new Command(id,null,productprice,true, userId));
+                else commands.add(new Command(id,null,productprice,false, userId));
             }
             response = new SOAPResponse("Retrieve commands "+commands.toString()+ "successfully.", SOAPResponseStatus.SUCCESS, commands);
 

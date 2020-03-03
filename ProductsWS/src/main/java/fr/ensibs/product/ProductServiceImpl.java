@@ -34,7 +34,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public SOAPResponse addCommand(HashMap<Product,Integer> products,String token)  {
         SOAPResponse response = null;
-        if(!Authentication.isAuthenticated(token) || !Authentication.isAdmin(token)) {
+        if(!Authentication.isAuthenticated(token)) {
             response = new SOAPResponse("Not allow", SOAPResponseStatus.UNAUTHORIZED, null);
             return response;
         }
@@ -42,75 +42,21 @@ public class ProductServiceImpl implements ProductService {
         int userId = Authentication.getUserId(token);
 
         String sql = "INSERT INTO commands (price, isPaid, user_id) VALUES (?,?,?)";
-        List<Integer> products_id=new ArrayList<>();
-        HashMap<Integer,Integer> product = new HashMap<>();
-        Connection conn = database.connect();
-        ArrayList<Integer> commandid = new ArrayList<>();
 
-        try{
-            PreparedStatement pstmt = conn.prepareStatement(sql);
-            //Start transaction
-            conn.setAutoCommit(false);
-            //Insert Command table
+        try(Connection conn = database.connect();
+            PreparedStatement pstmt = conn.prepareStatement(sql)){
+
             pstmt.setDouble(1,0.0);
-            pstmt.setInt(2, 0);
+            pstmt.setBoolean(2, false);
             pstmt.setInt(3, userId);
             pstmt.executeUpdate();
-            System.out.println("Command added successfully");
-            //Get command id
-           /** ResultSet rs    = pstmt.executeQuery(sql);
-            int command_id = 0;
-            if (rs.next()){
-                command_id = rs.getInt("command_id");
-            }*/
-            String sql2="select MAX(command_id)  from commands";
-            PreparedStatement pstmt2 = conn.prepareStatement(sql2);
 
-            ResultSet rs = pstmt2.executeQuery();
-            int command_id = rs.getInt(1);
-            /**String sql2="select command_id  from commands";
-            PreparedStatement pstmt2 = conn.prepareStatement(sql2);
-            ResultSet rs = pstmt2.executeQuery();
-            while(rs.next()){
-                commandid.add(rs.getInt(1));
-            }
-            int command_id = commandid.get(commandid.size()-1);*/
-            //Get product id and quantity
-            for(Product p:products.keySet()) {
-                String sql1 = "SELECT id FROM products WHERE productname = ?";
-                PreparedStatement pstmt1 = conn.prepareStatement(sql1);
-                pstmt1.setString(1,p.getProduct_Name());
-
-                ResultSet rs1 = pstmt1.executeQuery();
-                products_id.add(rs1.getInt("id"));
-                product.put(rs1.getInt("id"),products.get(p));
-            }
-            //Insert command product table
-            for(int pr_id:products_id){
-                commandProduct(command_id,pr_id,product.get(pr_id),token);
-            }
-            System.out.println("Products added to command successfully");
-
-            //Update price in command table
-            Double price=0.0;
-            for(Product p:products.keySet()){
-                    price+=p.getPrice()*products.get(p);
-            }
-            updatePrice(command_id,price,token);
-            response = new SOAPResponse("Command number "+command_id+" added successfully.", SOAPResponseStatus.SUCCESS, null);
-            conn.commit();
+            response = new SOAPResponse("Command added successfully.", SOAPResponseStatus.SUCCESS, null);
 
         }catch (SQLException e){
-            try {
-                if (conn != null) {
-                conn.rollback();
-                }
-            } catch (SQLException e2) {
-            System.out.println(e2.getMessage());
-            }
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
-        if(response == null) response = new SOAPResponse("Error while adding products.", SOAPResponseStatus.FAILED, null);
+        if(response == null) response = new SOAPResponse("Error while creating command.", SOAPResponseStatus.FAILED, null);
         return response;
     }
 
@@ -142,16 +88,46 @@ public class ProductServiceImpl implements ProductService {
             return response;
         }
 
-        String sql = "INSERT INTO commandsProduct (product_id, command_id, quantity) VALUES (?,?,?)";
+        double price = -1;
+        String sql = "SELECT price FROM products WHERE id = ?";
+        try(Connection conn = database.connect();
+            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, product_id);
+            ResultSet rs = pstmt.executeQuery();
+
+            if(rs.next()) {
+                price = rs.getDouble("price");
+            } else {
+                response = new SOAPResponse(" Product doesn't exist.", SOAPResponseStatus.FAILED, null);
+            }
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+
+        sql = "INSERT INTO commandsProduct (product_id, command_id, quantity) VALUES (?,?,?)";
         try (Connection conn = database.connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            conn.setAutoCommit(false);
 
             pstmt.setInt(1, product_id);
             pstmt.setInt(2, command_id);
             pstmt.setInt(3, quantity);
             pstmt.executeUpdate();
+
+
+            sql = "UPDATE commands SET price = ? WHERE command_id = ?";
+            PreparedStatement stmt3 = conn.prepareStatement(sql);
+            stmt3.setDouble(1, price * quantity);
+            stmt3.setInt(2, command_id);
+            stmt3.executeUpdate();
+
+            conn.commit();
             response = new SOAPResponse("product number "+product_id+" added to command number "+command_id+" successfully.", SOAPResponseStatus.SUCCESS, null);
-        }catch(SQLException e){e.printStackTrace();}
+        }catch(SQLException e) {
+            e.printStackTrace();
+        }
         if(response == null) response = new SOAPResponse("Error while commanding product.", SOAPResponseStatus.FAILED, null);
         return response;
     }
@@ -281,7 +257,7 @@ public class ProductServiceImpl implements ProductService {
             if (rs.next()) {
                 productId = rs.getInt("id");
             } else {
-                response = new SOAPResponse(productname + "doesn't exist.", SOAPResponseStatus.FAILED, null);
+                response = new SOAPResponse(productname + " doesn't exist.", SOAPResponseStatus.FAILED, null);
             }
         } catch(SQLException e) {
             e.printStackTrace();

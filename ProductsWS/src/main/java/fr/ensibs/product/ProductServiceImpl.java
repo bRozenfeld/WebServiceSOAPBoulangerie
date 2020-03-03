@@ -29,7 +29,6 @@ public class ProductServiceImpl implements ProductService {
 
     /**
      * Add a new Command with the given parameters
-     * @param products the list of products with their quantity in the command
      */
     @Override
     public SOAPResponse addCommand(String token)  {
@@ -62,26 +61,7 @@ public class ProductServiceImpl implements ProductService {
 
 
     @Override
-    public SOAPResponse updatePrice(int command_id,double price,String token){
-        SOAPResponse response = null;
-        if(!Authentication.isAuthenticated(token) || !Authentication.isAdmin(token)) {
-            response = new SOAPResponse("Not allow", SOAPResponseStatus.UNAUTHORIZED, null);
-            return response;
-        }
-        String sql = "UPDATE commands SET price =? WHERE command_id = ?";
-        try(Connection conn = database.connect();
-            PreparedStatement stmt3 = conn.prepareStatement(sql);) {
-            stmt3.setDouble(1, price);
-            stmt3.setInt(2, command_id);
-            stmt3.executeUpdate();
-            response = new SOAPResponse("Command price updated successfully.", SOAPResponseStatus.SUCCESS, null);
-        }catch(SQLException e){e.printStackTrace();}
-        if(response == null) response = new SOAPResponse("Error while updating price.", SOAPResponseStatus.FAILED, null);
-        return response;
-    }
-
-    @Override
-    public SOAPResponse commandProduct(int command_id,int product_id, int quantity,String token) {
+    public SOAPResponse addProductToCommand(int command_id,int product_id, int quantity,String token) {
         SOAPResponse response = null;
         if(!Authentication.isAuthenticated(token)) {
             response = new SOAPResponse("Not allow", SOAPResponseStatus.UNAUTHORIZED, null);
@@ -105,28 +85,30 @@ public class ProductServiceImpl implements ProductService {
             e.printStackTrace();
         }
 
-        sql = "INSERT INTO commandsProduct (product_id, command_id, quantity) VALUES (?,?,?)";
-        try (Connection conn = database.connect();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        if(price != -1) {
+            sql = "INSERT INTO commandsProduct (product_id, command_id, quantity) VALUES (?,?,?)";
+            try (Connection conn = database.connect();
+                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            conn.setAutoCommit(false);
+                conn.setAutoCommit(false);
 
-            pstmt.setInt(1, product_id);
-            pstmt.setInt(2, command_id);
-            pstmt.setInt(3, quantity);
-            pstmt.executeUpdate();
+                pstmt.setInt(1, product_id);
+                pstmt.setInt(2, command_id);
+                pstmt.setInt(3, quantity);
+                pstmt.executeUpdate();
 
 
-            sql = "UPDATE commands SET price = ? WHERE command_id = ?";
-            PreparedStatement stmt3 = conn.prepareStatement(sql);
-            stmt3.setDouble(1, price * quantity);
-            stmt3.setInt(2, command_id);
-            stmt3.executeUpdate();
+                sql = "UPDATE commands SET price = ? WHERE command_id = ?";
+                PreparedStatement stmt3 = conn.prepareStatement(sql);
+                stmt3.setDouble(1, price * quantity);
+                stmt3.setInt(2, command_id);
+                stmt3.executeUpdate();
 
-            conn.commit();
-            response = new SOAPResponse("product number "+product_id+" added to command number "+command_id+" successfully.", SOAPResponseStatus.SUCCESS, null);
-        }catch(SQLException e) {
-            e.printStackTrace();
+                conn.commit();
+                response = new SOAPResponse("product number " + product_id + " added to command number " + command_id + " successfully.", SOAPResponseStatus.SUCCESS, null);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         if(response == null) response = new SOAPResponse("Error while commanding product.", SOAPResponseStatus.FAILED, null);
         return response;

@@ -38,14 +38,8 @@ public interface ProductService {
     /**
      * Method to add a product to the command
      */
-    SOAPResponse commandProduct(@WebParam(name="command_id") int command_id,@WebParam(name="product_id") int productid,@WebParam(name="quantity") int quantity,@WebParam(name="user_token") String token);
+    SOAPResponse addProductToCommand(@WebParam(name="command_id") int command_id,@WebParam(name="product_id") int productid,@WebParam(name="quantity") int quantity,@WebParam(name="user_token") String token);
 
-    @WebMethod(operationName = "updatePrice")
-    @WebResult(name = "updatePriceResult")
-    /**
-     * Method to update the price total of the command when add a new product
-     */
-    SOAPResponse updatePrice(@WebParam(name="command_id")int command_id,@WebParam(name="price") double price,@WebParam(name="user_token") String token);
 
     @WebMethod(operationName = "getProductsOfCommand")
     @WebResult(name = "getProductsOfCommandResult")

@@ -270,14 +270,36 @@ public class ProductServiceImpl implements ProductService {
             response = new SOAPResponse("Not allow", SOAPResponseStatus.UNAUTHORIZED, null);
             return response;
         }
-        String sql = "DELETE FROM products WHERE productname = ? ";
-        try (Connection conn = database.connect();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
+        String sqlOne = "SELECT id FROM products WHERE productname = ? ";
+        int productId = -1;
+        try(Connection conn = database.connect();
+            PreparedStatement pstmt = conn.prepareStatement(sqlOne)){
             pstmt.setString(1, productname);
-            pstmt.executeUpdate();
-            response = new SOAPResponse("Product "+productname+" deleted successfully.", SOAPResponseStatus.SUCCESS, null);
-        } catch(SQLException e) { e.printStackTrace(); }
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                productId = rs.getInt("id");
+            } else {
+                response = new SOAPResponse(productname + "doesn't exist.", SOAPResponseStatus.FAILED, null);
+            }
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+
+        if(productId != -1) {
+            String sql = "DELETE FROM products WHERE id = ? ";
+            try (Connection conn = database.connect();
+                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+                pstmt.setInt(1, productId);
+                pstmt.executeUpdate();
+                response = new SOAPResponse("Product " + productname + " deleted successfully.", SOAPResponseStatus.SUCCESS, null);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
         if(response == null) response = new SOAPResponse("Error while deleting product.", SOAPResponseStatus.FAILED, null);
         return response;
     }

@@ -78,6 +78,8 @@ public class PaymentServiceImpl implements PaymentService  {
             response = new SOAPResponse("Not allow", SOAPResponseStatus.UNAUTHORIZED, null);
             return response;
         }
+        int userId = Authentication.getUserId(token);
+
         //HashMap<Integer,Integer> productsOfCommand=new HashMap<>();
         HashMap<Product,Integer> products = new HashMap<>();
         String sql = "SELECT product_id, quantity FROM commandsProduct WHERE command_id = ?";
@@ -109,7 +111,7 @@ public class PaymentServiceImpl implements PaymentService  {
 
 
 
-            Command command=new Command(command_id,products,pricetot,paid);
+            Command command=new Command(command_id,products,pricetot,paid, userId);
             response = new SOAPResponse("Bill generated "+command+ "successfully.", SOAPResponseStatus.SUCCESS, command);
 
 

@@ -3,9 +3,10 @@ package fr.ensibs.response;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 @XmlRootElement
-@XmlSeeAlso(ArrayList.class)
+@XmlSeeAlso({ArrayList.class, HashMap.class})
 public class SOAPResponse {
     private String message;
     private SOAPResponseStatus status;

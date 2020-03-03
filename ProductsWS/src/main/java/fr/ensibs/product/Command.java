@@ -104,7 +104,7 @@ public class Command {
     public String getBill(){
         String bill="";
         for(Product p:productsList.keySet()){
-            bill+="product name : "+p.getProduct_Name()+"     price:"+p.getPrice()+"€      quantity"+productsList.get(p)+"\n";
+            bill+=" name : "+p.getProduct_Name()+"     price:"+p.getPrice()+"€      quantity"+productsList.get(p)+"\n";
 
         }
         return bill;

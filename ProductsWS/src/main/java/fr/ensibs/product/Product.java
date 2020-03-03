@@ -52,6 +52,6 @@ public class Product {
 
     @Override
     public String toString(){
-        return "produit  :[nom produit :"+this.product_Name+"prix du produit:"+this.price+"] \n";
+        return "  [nom :"+this.product_Name+"  prix unitaire:"+this.price+"] \n";
     }
 }

@@ -32,7 +32,7 @@ public class ProductServiceImpl implements ProductService {
      * @param products the list of products with their quantity in the command
      */
     @Override
-    public SOAPResponse addCommand(HashMap<Product,Integer> products,String token)  {
+    public SOAPResponse addCommand(String token)  {
         SOAPResponse response = null;
         if(!Authentication.isAuthenticated(token)) {
             response = new SOAPResponse("Not allow", SOAPResponseStatus.UNAUTHORIZED, null);

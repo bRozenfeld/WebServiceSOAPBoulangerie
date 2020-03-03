@@ -14,11 +14,10 @@ import java.util.HashMap;
 public interface ProductService {
     /**
      * Add a new Command with the given parameters
-     * @param products Map of products with their quantity
      */
     @WebMethod(operationName = "addCommand")
     @WebResult(name="addCommandResult")
-    SOAPResponse addCommand(@WebParam(name="products")HashMap<Product,Integer> products,@WebParam(name="user_token") String token);
+    SOAPResponse addCommand(@WebParam(name="user_token") String token);
 
     @WebMethod(operationName = "cancelCommand")
     @WebResult(name = "cancelCommandResult")

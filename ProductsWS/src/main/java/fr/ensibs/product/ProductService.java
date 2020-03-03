@@ -40,6 +40,14 @@ public interface ProductService {
      */
     SOAPResponse addProductToCommand(@WebParam(name="command_id") int command_id,@WebParam(name="product_id") int productid,@WebParam(name="quantity") int quantity,@WebParam(name="user_token") String token);
 
+    @WebMethod(operationName = "removeCommandProduct")
+    @WebResult(name = "removeCommandProductResult")
+    /**
+     * Method to remove a product from the command
+     */
+    SOAPResponse removeProductFromCommand(@WebParam(name="command_id") int command_id,@WebParam(name="product_id") int productid,@WebParam(name="user_token") String token);
+
+
 
     @WebMethod(operationName = "getProductsOfCommand")
     @WebResult(name = "getProductsOfCommandResult")

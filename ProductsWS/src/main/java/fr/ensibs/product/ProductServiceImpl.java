@@ -85,7 +85,24 @@ public class ProductServiceImpl implements ProductService {
             e.printStackTrace();
         }
 
-        if(price != -1) {
+        double pricetotal = -1;
+        sql = "SELECT price FROM commands WHERE command_id = ?";
+        try(Connection conn = database.connect();
+            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, command_id);
+            ResultSet rs = pstmt.executeQuery();
+
+            if(rs.next()) {
+                pricetotal = rs.getDouble("price");
+            } else {
+                response = new SOAPResponse(" command doesn't exist.", SOAPResponseStatus.FAILED, null);
+            }
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+
+        if(price != -1 && pricetotal!=-1) {
             sql = "INSERT INTO commandsProduct (product_id, command_id, quantity) VALUES (?,?,?)";
             try (Connection conn = database.connect();
                  PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -100,12 +117,94 @@ public class ProductServiceImpl implements ProductService {
 
                 sql = "UPDATE commands SET price = ? WHERE command_id = ?";
                 PreparedStatement stmt3 = conn.prepareStatement(sql);
-                stmt3.setDouble(1, price * quantity);
+                stmt3.setDouble(1, pricetotal+(price * quantity));
                 stmt3.setInt(2, command_id);
                 stmt3.executeUpdate();
 
                 conn.commit();
                 response = new SOAPResponse("product number " + product_id + " added to command number " + command_id + " successfully.", SOAPResponseStatus.SUCCESS, null);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        if(response == null) response = new SOAPResponse("Error while commanding product.", SOAPResponseStatus.FAILED, null);
+        return response;
+    }
+
+    @Override
+    public SOAPResponse removeProductFromCommand(int command_id,int product_id,String token){
+        SOAPResponse response = null;
+        if(!Authentication.isAuthenticated(token)) {
+            response = new SOAPResponse("Not allow", SOAPResponseStatus.UNAUTHORIZED, null);
+            return response;
+        }
+        double price = -1;
+        String sql = "SELECT price FROM products WHERE id = ?";
+        try(Connection conn = database.connect();
+            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, product_id);
+            ResultSet rs = pstmt.executeQuery();
+
+            if(rs.next()) {
+                price = rs.getDouble("price");
+            } else {
+                response = new SOAPResponse(" Product doesn't exist.", SOAPResponseStatus.FAILED, null);
+            }
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+
+        double pricetotal = -1;
+        sql = "SELECT price FROM commands WHERE command_id = ?";
+        try(Connection conn = database.connect();
+            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, command_id);
+            ResultSet rs = pstmt.executeQuery();
+
+            if(rs.next()) {
+                pricetotal = rs.getDouble("price");
+            } else {
+                response = new SOAPResponse(" command doesn't exist.", SOAPResponseStatus.FAILED, null);
+            }
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+
+        int quantity = -1;
+        sql = "SELECT quantity FROM commandsProduct WHERE command_id = ? and product_id =?";
+        try(Connection conn = database.connect();
+            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, command_id);
+            pstmt.setInt(2, product_id);
+            ResultSet rs = pstmt.executeQuery();
+
+            if(rs.next()) {
+                quantity = rs.getInt("quantity");
+            } else {
+                response = new SOAPResponse(" Product Command doesn't exist.", SOAPResponseStatus.FAILED, null);
+            }
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+        if(price != -1 && pricetotal!= -1 && quantity != -1) {
+            sql = "DELETE FROM commandsProduct WHERE command_id = ? and product_id = ?";
+
+            try (Connection conn = database.connect();
+                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                conn.setAutoCommit(false);
+                pstmt.setInt(1, command_id);
+                pstmt.setInt(2, product_id);
+                pstmt.executeUpdate();
+
+                sql = "UPDATE commands SET price = ? WHERE command_id = ?";
+                PreparedStatement stmt3 = conn.prepareStatement(sql);
+                stmt3.setDouble(1, pricetotal-(price * quantity));
+                stmt3.setInt(2, command_id);
+                stmt3.executeUpdate();
+                response = new SOAPResponse("product number " + product_id + " from command number " + command_id + " is deleted successfully.", SOAPResponseStatus.SUCCESS, null);
+                conn.commit();
             } catch (SQLException e) {
                 e.printStackTrace();
             }

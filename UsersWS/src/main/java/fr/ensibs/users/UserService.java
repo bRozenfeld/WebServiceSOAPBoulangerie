@@ -3,7 +3,6 @@ package fr.ensibs.users;
 import fr.ensibs.response.SOAPResponse;
 
 import javax.jws.*;
-import java.util.List;
 
 @WebService(name="UserService")
 public interface UserService {
@@ -13,6 +12,7 @@ public interface UserService {
      * @param username {@link String} used to identify this user
      * @param password {@link String} used to auth this user
      * @param isAdmin {@link Boolean} used to define the role of this user
+     * @return {@link SOAPResponse} request's response
      */
     @WebMethod(operationName = "register")
     @WebResult(name="registerResult")
@@ -25,23 +25,27 @@ public interface UserService {
      * Allow a user to log in the app using the given credentials
      * @param username {@link String} used to identify this user
      * @param password {@link String} used to auth this user
-     * @return {@link String} A token to identify this user through the app
+     * @return {@link SOAPResponse} request's response
      */
     @WebMethod(operationName = "logIn")
     @WebResult(name = "logInResult")
     SOAPResponse logIn(@WebParam(name="username") String username, @WebParam(name="password") String password);
 
 
-
-
+    /**
+     * Allow a user to delete an other user with the given id
+     * @param id int of the user to delete
+     * @param token String used to identify the user calling this service
+     * @return {@link SOAPResponse} request's response
+     */
     @WebMethod(operationName = "deleteUser")
     @WebResult(name = "deleteUserResult")
     SOAPResponse deleteUser(@WebParam(name="id") int id, @WebParam(name="token") String token);
 
     /**
      * Retrieve the list of all users
-     * @param token
-     * @return
+     * @param token String used to identify the user calling this service
+     * @return {@link SOAPResponse} request's response
      */
     @WebMethod(operationName = "getUsers")
     @WebResult(name = "getUsersResult")
@@ -49,8 +53,8 @@ public interface UserService {
 
     /**
      * Log out the user by invalidating his token
-     * @param token
-     * @return
+     * @param token String of the user calling this service
+     * @return {@link SOAPResponse} request's response
      */
     SOAPResponse logout(@WebParam(name="token") String token);
 

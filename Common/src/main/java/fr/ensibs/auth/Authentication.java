@@ -13,16 +13,25 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * Class used to authenticate and manage tokens of the app
+ */
 public final class Authentication {
 
+    /**
+     * key used to crypt the tokens
+     */
     public static final String SECRET_KEY = "secret";
 
+    /**
+     * private constructor to avoid any instance of Authentication
+     */
     private Authentication() { }
 
     /**
      * Check if the user's token is valid
-     * @param token
-     * @return
+     * @param token String containing the user token
+     * @return true if valid, false otherwise
      */
     public static boolean isAuthenticated(String token) {
         boolean res = false;
@@ -55,8 +64,8 @@ public final class Authentication {
 
     /**
      * Indicate if the user is an admin or not
-     * @param token
-     * @return
+     * @param token String containing the user token
+     * @return true if this user is admin, false otherwise
      */
     public static boolean isAdmin(String token) {
         boolean res = false;
@@ -68,9 +77,8 @@ public final class Authentication {
     }
 
     /**
-     *
-     * @param token
-     * @return
+     * @param token String containing the user tokeb
+     * @return int corresponding to the id of the unique of this user
      */
     public static int getUserId(String token) {
        int res = -1;

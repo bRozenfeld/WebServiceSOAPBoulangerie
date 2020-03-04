@@ -1,4 +1,4 @@
-# Boulangerie : Services de gestion d'une boulangerie réalisé par ROZENFELD Benjamin and SBAITY Haitam
+# Bakery Management
 WebServiceSOAPBoulangerie
 
 ## Requirements
@@ -6,25 +6,13 @@ WebServiceSOAPBoulangerie
 * maven
 
 ## Project Architecture
-Dans cette application nous avons réalisé trois service pour la gestion d'une boulangerie:
-* Payments service
-* Products service
-* Users service
+* PaymentsWS : web service for payment
+* ProductsWS : web service to manage products and user commands
+* UsersWS : web service to register, login, logout users
+* Common : class common and required by the others module
+* WarModule : module used to generate the deployment file
 
-## Description de lancement : 
-
-* Cloner le projet à partir de cette commande 
-
-```bash
-git clone https://github.com/bRozenfeld/WebServiceSOAPBoulangerie.git
-```
-
-## La documentation
-Pour generer et voir la documentation, tapez la commande suivante 
-
-```bash
-mvn javadoc::aggregate
-```
-
-Vérifiez Dans le dossier > target/ qu'un repertoir sous le nom de site est generé
-vous trouvez la documentation dans > target/site/apidocs
+## Web Services available
+* $deployment address$/bakery/users
+* $deployment address$/bakery/products
+* $deployment address$/bakery/payments

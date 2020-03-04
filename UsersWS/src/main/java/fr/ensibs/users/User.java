@@ -2,11 +2,9 @@ package fr.ensibs.users;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlSeeAlso;
-import java.util.ArrayList;
 
 /**
- * Class representing a user that can sign in
+ * Class representing a user
  */
 @XmlRootElement
 public class User {
@@ -25,10 +23,19 @@ public class User {
      */
     private boolean isAdmin;
 
+    /**
+     * Constructor
+     */
     public User() {
 
     }
 
+    /**
+     * Constructor
+     * @param username
+     * @param password
+     * @param isAdmin
+     */
     public User(String username, String password, boolean isAdmin) {
         this.isAdmin = isAdmin;
         this.username = username;

@@ -113,7 +113,7 @@ public class PaymentServiceImpl implements PaymentService  {
 
 
             Command command=new Command(command_id,products,pricetot,paid, userId);
-            response = new SOAPResponse("Bill generated "+command+ "successfully.", SOAPResponseStatus.SUCCESS, command);
+            response = new SOAPResponse("Bill generated "+command+ "successfully.", SOAPResponseStatus.SUCCESS, command.toString());
 
 
         }catch(SQLException e) { e.printStackTrace(); }

@@ -8,6 +8,7 @@ import fr.ensibs.response.SOAPResponse;
 import fr.ensibs.response.SOAPResponseStatus;
 
 import javax.jws.WebService;
+import javax.xml.bind.annotation.XmlSeeAlso;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,6 +20,7 @@ import java.util.HashMap;
  * @author SBAITY Haitam-ROZENFELD Benjamin
  *
  */
+@XmlSeeAlso({Command.class, Product.class})
 @WebService(serviceName = "PaymentService", portName = "PaymentPort", endpointInterface = "fr.ensibs.payment.PaymentService")
 public class PaymentServiceImpl implements PaymentService  {
 

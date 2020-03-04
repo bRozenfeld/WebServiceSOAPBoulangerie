@@ -80,7 +80,7 @@ public interface ProductService {
     /**
      * Method to display the products card
      */
-    SOAPResponse getProductsCard(@WebParam(name="user_token") String token);
+    SOAPResponse getCard(@WebParam(name="user_token") String token);
 
 
     @WebMethod(operationName = "getProduct")

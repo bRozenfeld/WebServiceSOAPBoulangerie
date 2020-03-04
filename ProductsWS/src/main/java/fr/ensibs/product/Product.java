@@ -28,11 +28,7 @@ public class Product {
         this.price = price;
     }
 
-    /**
-     * Getters and setters
-     */
-
-
+    /*****Getters and setters*************/
 
     public String getProduct_Name() {
         return product_Name;

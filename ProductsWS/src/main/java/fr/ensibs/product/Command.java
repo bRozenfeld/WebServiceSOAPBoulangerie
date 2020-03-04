@@ -32,10 +32,6 @@ public class Command {
      */
     private int user_id;
 
-    /**
-     * Constructors
-     */
-    public Command(){}
 
     public Command(int id,HashMap<Product,Integer> productsList,Double price, Boolean isPaid, int user_id) {
         this.productsList=productsList;
@@ -45,10 +41,8 @@ public class Command {
         this.user_id = user_id;
     }
 
-    /**
-     * Getters and setters
-     *
-     */
+    /********Getters and setters**************/
+
     public int getCommand_id() {
         return command_id;
     }

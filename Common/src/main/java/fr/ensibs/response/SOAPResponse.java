@@ -5,15 +5,39 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * Class used by web service to return something
+ */
 @XmlRootElement
 @XmlSeeAlso({ArrayList.class, HashMap.class})
 public class SOAPResponse {
+
+    /**
+     * Response's messafe
+     */
     private String message;
+
+    /**
+     * status of the request
+     */
     private SOAPResponseStatus status;
+
+    /**
+     * Object return by the request
+     */
     private Object requestObject;
 
+    /**
+     * Constructor
+     */
     public SOAPResponse() { }
 
+    /**
+     * Constructor
+     * @param message
+     * @param status
+     * @param requestObject
+     */
     public SOAPResponse(String message, SOAPResponseStatus status, Object requestObject) {
         this.message = message;
         this.status = status;

@@ -24,6 +24,9 @@ public class UserServiceImpl implements UserService{
     private static final String AUTHENTICATION_FAILED = "Authentication failed : Invalid credentials.";
     private static final String AUTHENTICATION_SUCCESSFUL = "Authentication successful !";
 
+    /**
+     * Connector to the database
+     */
     private BakeryDBConnect database;
 
     public UserServiceImpl() {

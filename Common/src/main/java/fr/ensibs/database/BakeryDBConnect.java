@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 /**
- * Class used to initialise the database and get a connection from the database
+ * Class used to manage connection and initialisation with the database
  */
 public final class BakeryDBConnect {
 
@@ -55,15 +55,10 @@ public final class BakeryDBConnect {
              Statement stmt = conn.createStatement()) {
 
             stmt.execute(CREATE_USER_TABLE);
-            System.out.println("USER TABLE created successfully.");
             stmt.execute(CREATE_PRODUCT_TABLE);
-            System.out.println("PRODUCT TABLE created successfully.");
             stmt.execute(CREATE_COMMAND_TABLE);
-            System.out.println("COMMAND TABLE created successfully.");
             stmt.execute(CREATE_COMMAND_PRODUCT_TABLE);
-            System.out.println("COMMAND_PRODUCT TABLE created successfully.");
             stmt.execute(CREATE_BLACKLIST_TOKEN_TABLE);
-
 
             System.out.println("DATABASE initialised successfully.");
         } catch (SQLException e) { e.printStackTrace(); }

@@ -1,6 +1,7 @@
 package fr.ensibs.product;
 
 
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.List;
  * Class representing the order of a user
  * @author SBAITY Haitam-ROZENFELD Benjamin
  */
+@XmlRootElement
 public class Command {
     /**
      * Id of the command

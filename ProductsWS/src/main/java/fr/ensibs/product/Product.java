@@ -1,9 +1,12 @@
 package fr.ensibs.product;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * Class representing the product that a user can purshase
  * @author  SBAITY Haitam-ROZENFELD Benjamin
  */
+@XmlRootElement
 public class Product {
     /**
      * Id of the product

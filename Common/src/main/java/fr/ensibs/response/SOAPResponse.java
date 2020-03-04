@@ -1,5 +1,7 @@
 package fr.ensibs.response;
 
+import net.sf.ehcache.transaction.xa.commands.Command;
+
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import java.util.ArrayList;
@@ -9,7 +11,7 @@ import java.util.HashMap;
  * Class used by web service to return something
  */
 @XmlRootElement
-@XmlSeeAlso({ArrayList.class, HashMap.class})
+@XmlSeeAlso({ArrayList.class, HashMap.class, Command.class})
 public class SOAPResponse {
 
     /**

@@ -20,7 +20,6 @@ import java.util.HashMap;
  * @author SBAITY Haitam-ROZENFELD Benjamin
  *
  */
-@XmlSeeAlso({Command.class, Product.class})
 @WebService(serviceName = "PaymentService", portName = "PaymentPort", endpointInterface = "fr.ensibs.payment.PaymentService")
 public class PaymentServiceImpl implements PaymentService  {
 

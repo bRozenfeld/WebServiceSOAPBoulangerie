@@ -261,24 +261,26 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public SOAPResponse getListCommands(String token) {
         SOAPResponse response = null;
-        if(!Authentication.isAuthenticated(token) || !Authentication.isAdmin(token)) {
+        if(!Authentication.isAuthenticated(token)) {
             response = new SOAPResponse("Not allow", SOAPResponseStatus.UNAUTHORIZED, null);
             return response;
         }
 
         int userId = Authentication.getUserId(token);
 
-        String sql = "SELECT * FROM commands";
+        String sql = "SELECT * FROM commands WHERE user_id = ?";
         List<Command> commands = new ArrayList<Command>();
         try (Connection conn = database.connect();
-             PreparedStatement pstmt = conn.prepareStatement(sql);
-             ResultSet rs = pstmt.executeQuery()) {
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, userId);
+            ResultSet rs = pstmt.executeQuery();
 
             while(rs.next()) {
                 int id = rs.getInt("command_id");
                 double productprice = rs.getDouble("price");
-                int isPaid = rs.getInt("isPaid");
-                if(isPaid==1)commands.add(new Command(id,null,productprice,true, userId));
+                boolean isPaid = rs.getBoolean("isPaid");
+                if(isPaid)commands.add(new Command(id,null,productprice,true, userId));
                 else commands.add(new Command(id,null,productprice,false, userId));
             }
             response = new SOAPResponse("Retrieve commands "+commands.toString()+ "successfully.", SOAPResponseStatus.SUCCESS, commands);
@@ -362,7 +364,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public SOAPResponse getProductsCard(String token) {
+    public SOAPResponse getCard(String token) {
         SOAPResponse response = null;
         if(!Authentication.isAuthenticated(token)) {
             response = new SOAPResponse("Not allow", SOAPResponseStatus.UNAUTHORIZED, null);

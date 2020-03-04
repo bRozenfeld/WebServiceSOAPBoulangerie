@@ -74,12 +74,15 @@ public interface ProductService {
      * Method to remove a product from the products card
      */
     SOAPResponse removeProduct(@WebParam(name="productname")String productname,@WebParam(name="user_token") String token);
-    @WebMethod(operationName = "getProductCard")
-    @WebResult(name = "getProductCardResult")
+
+    @WebMethod(operationName = "getCard")
+    @WebResult(name = "getCardResult")
     /**
      * Method to display the products card
      */
     SOAPResponse getProductsCard(@WebParam(name="user_token") String token);
+
+
     @WebMethod(operationName = "getProduct")
     @WebResult(name = "getProductResult")
     /**

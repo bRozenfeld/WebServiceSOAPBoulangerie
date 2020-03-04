@@ -75,7 +75,7 @@ public final class BakeryDBConnect {
 
     /**
      * Connect to the DATABASE_URL
-     * @return {@Link Connection} object
+     * @return {@link Connection} object
      */
     public Connection connect() {
         Connection conn = null;

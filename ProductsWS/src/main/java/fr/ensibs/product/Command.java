@@ -101,6 +101,10 @@ public class Command {
         this.user_id = user_id;
     }
 
+    /**
+     * Generate the a bill each product
+     * @return the bill of products
+     */
     public String getBill(){
         String bill="";
         for(Product p:productsList.keySet()){

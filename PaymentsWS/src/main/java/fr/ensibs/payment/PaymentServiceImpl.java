@@ -17,7 +17,7 @@ import java.util.HashMap;
 
 /**
  * Class to define the payment service
- * @author SBAITY Haitam-ROZENFELD Benjamin
+ * @author SBAITY Haitam-ROZENFELD Benjamin-DESCAMPS Etienne
  *
  */
 @WebService(serviceName = "PaymentService", portName = "PaymentPort", endpointInterface = "fr.ensibs.payment.PaymentService")

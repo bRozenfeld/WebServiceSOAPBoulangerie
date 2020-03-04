@@ -27,9 +27,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
 
-    /**
-     * Add a new Command with the given parameters
-     */
+
     @Override
     public SOAPResponse addCommand(String token)  {
         SOAPResponse response = null;
@@ -293,13 +291,7 @@ public class ProductServiceImpl implements ProductService {
 
     }
 
-    /**
-     * create a new product with the given parameters
-     * create a new product with the given parameters
 
-     * @param productname
-     * @param price
-     */
     @Override
     public SOAPResponse addProduct(String productname, Double price,String token) {
         SOAPResponse response = null;

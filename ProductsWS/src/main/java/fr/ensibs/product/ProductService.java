@@ -3,7 +3,7 @@ package fr.ensibs.product;
 import fr.ensibs.response.SOAPResponse;
 
 import javax.jws.*;
-import java.util.HashMap;
+
 
 /**
  * Interface to define the product service

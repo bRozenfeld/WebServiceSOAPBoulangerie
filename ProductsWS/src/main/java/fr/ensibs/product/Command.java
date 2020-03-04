@@ -104,7 +104,7 @@ public class Command {
     public String getBill(){
         String bill="";
         for(Product p:productsList.keySet()){
-            bill+=" name : "+p.getProduct_Name()+"     price:"+p.getPrice()+"€      quantity"+productsList.get(p)+"\n";
+            bill+="| name : "+p.getProduct_name()+" | price:"+p.getPrice()+" €     | quantity"+productsList.get(p)+"|\n";
 
         }
         return bill;
@@ -113,7 +113,7 @@ public class Command {
     @Override
     public String toString(){
 
-        return "Commande numero  : "+this.command_id+"\n"+getBill()+"\n prix totale : "+this.price+"€, \n payé : "+this.isPaid+"\n";
+        return "\nCommande numero  : "+this.command_id+"\n"+getBill()+" prix totale : "+this.price+" €, \n payé : "+this.isPaid+"\n";
 
     }
 }

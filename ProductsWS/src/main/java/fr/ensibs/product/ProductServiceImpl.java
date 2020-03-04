@@ -399,7 +399,7 @@ public class ProductServiceImpl implements ProductService {
             String productname = rs.getString("productname");
             double productprice = rs.getDouble("price");
 
-             product.setProduct_Name(productname);
+             product.setProduct_name(productname);
              product.setPrice(productprice);
 
             response = new SOAPResponse(product+" retrievied successfully.", SOAPResponseStatus.SUCCESS, product);

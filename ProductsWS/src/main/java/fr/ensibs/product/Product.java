@@ -15,7 +15,7 @@ public class Product {
     /**
      *The name of the product
      */
-    private String product_Name;
+    private String product_name;
     /**
      * The price of the product
      */
@@ -27,22 +27,18 @@ public class Product {
     public Product(){}
 
     public Product(String product_Name, Double price) {
-        this.product_Name = product_Name;
+        this.product_name = product_Name;
         this.price = price;
     }
 
-    /**
-     * Getters and setters
-     */
+    /*****Getters and setters*************/
 
-
-
-    public String getProduct_Name() {
-        return product_Name;
+    public String getProduct_name() {
+        return product_name;
     }
 
-    public void setProduct_Name(String product_Name) {
-        this.product_Name = product_Name;
+    public void setProduct_name(String product_name) {
+        this.product_name = product_name;
     }
 
     public Double getPrice() {
@@ -55,6 +51,6 @@ public class Product {
 
     @Override
     public String toString(){
-        return "  [nom :"+this.product_Name+"  prix unitaire:"+this.price+"] \n";
+        return "  [nom :"+this.product_name+"  prix unitaire:"+this.price+"] \n";
     }
 }

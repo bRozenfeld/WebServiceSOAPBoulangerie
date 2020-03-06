@@ -78,12 +78,12 @@ public interface ProductService {
      * Method to add a product to the products card
      * @param productname the product name
      * @param price the price of the product
+     * @param token user token
      * @return success if the product added successfully to the products card
      */
     @WebMethod(operationName = "addProduct")
     @WebResult(name = "addProductResult")
-    SOAPResponse addProduct(@WebParam(name="product_name") String productname,
-                       @WebParam(name="price") Double price,@WebParam(name="user_token") String token);
+    SOAPResponse addProduct(@WebParam(name="product_name") String productname,@WebParam(name="price") Double price,@WebParam(name="user_token") String token);
 
     /**
      * Method to remove a product from the products card

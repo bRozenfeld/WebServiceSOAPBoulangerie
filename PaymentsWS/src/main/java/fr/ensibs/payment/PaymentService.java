@@ -9,7 +9,7 @@ import javax.jws.WebService;
 
 /**
  * Interface to define the payment service
- * @author SBAITY Haitam-ROZENFELD Benjamin
+ * @author SBAITY Haitam-ROZENFELD Benjamin-DESCAMP Etienne
  *
  */
 @WebService(name="PaymentService", targetNamespace = "http://paymentwebservice.ensibs.fr/")

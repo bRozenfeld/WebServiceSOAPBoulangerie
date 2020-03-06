@@ -9,7 +9,8 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>WarModule</artifactId>
+    <artifactId>Bakery</artifactId>
+    <version>1.0</version>
     <packaging>war</packaging>
 
     <dependencies>
